@@ -1,0 +1,89 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // ===============================================================
+    // Helper Functions
+    // ===============================================================
+
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    function isOwner(userId) {
+      return isAuthenticated() && request.auth.uid == userId;
+    }
+
+    function isAdmin() {
+      let userDoc = get(/databases/$(database)/documents/users/$(request.auth.uid));
+      let isVerifiedAdmin = (request.auth.token.get('email', '') == "linkupply207@gmail.com" && request.auth.token.get('email_verified', false) == true);
+      return isAuthenticated() && (isVerifiedAdmin || (userDoc != null && userDoc.data.get('role', 'user') == 'admin'));
+    }
+
+    // ===============================================================
+    // Rules
+    // ===============================================================
+
+    // User Profiles
+    match /users/{userId} {
+      allow read: if isAuthenticated();
+      allow create, update: if isOwner(userId);
+      allow delete: if isOwner(userId);
+      
+      // Contacts subcollection
+      match /contacts/{contactId} {
+        allow read: if isOwner(userId) || request.auth.uid == contactId;
+        allow write: if isOwner(userId) || request.auth.uid == contactId;
+      }
+
+      // Requests subcollection
+      match /requests/{requesterId} {
+        allow read: if isOwner(userId);
+        allow create: if isAuthenticated() && request.auth.uid == requesterId;
+        allow update, delete: if isOwner(userId) || request.auth.uid == requesterId;
+      }
+
+      // User Chats Metadata
+      match /userChats/{chatId} {
+        allow read, write: if isOwner(userId);
+      }
+    }
+
+    // Chats
+    match /chats/{chatId} {
+      allow read: if isAuthenticated() && (chatId == 'official_broadcast' || chatId.matches('.*linkup_official.*') || request.auth.uid in resource.data.participants);
+      allow create: if isAuthenticated() && (request.auth.uid in request.resource.data.participants || chatId.matches('.*linkup_official.*') || (chatId == 'official_broadcast' && isAdmin()));
+      allow update: if isAuthenticated() && (chatId == 'official_broadcast' || chatId.matches('.*linkup_official.*') || request.auth.uid in resource.data.participants || isAdmin());
+      allow delete: if chatId == 'official_broadcast' && isAdmin();
+
+      match /messages/{messageId} {
+        allow read: if isAuthenticated() && (chatId == 'official_broadcast' || chatId.matches('.*linkup_official.*') || request.auth.uid in get(/databases/$(database)/documents/chats/$(chatId)).data.participants);
+        allow create: if isAuthenticated() && 
+                      (chatId == 'official_broadcast' || chatId.matches('.*linkup_official.*') || request.auth.uid in get(/databases/$(database)/documents/chats/$(chatId)).data.participants);
+        allow update: if isAuthenticated() && 
+                      (chatId == 'official_broadcast' || chatId.matches('.*linkup_official.*') || request.auth.uid in get(/databases/$(database)/documents/chats/$(chatId)).data.participants);
+        allow delete: if isAuthenticated() && (chatId == 'official_broadcast' && isAdmin());
+      }
+    }
+
+    // Calls
+    match /calls/{callId} {
+      allow read: if isAuthenticated() && (request.auth.uid == resource.data.callerId || request.auth.uid == resource.data.calleeId);
+      allow create: if isAuthenticated() && request.auth.uid == request.resource.data.callerId;
+      allow update: if isAuthenticated() && (request.auth.uid == resource.data.callerId || request.auth.uid == resource.data.calleeId);
+      allow delete: if isAuthenticated() && (request.auth.uid == resource.data.callerId || request.auth.uid == resource.data.calleeId);
+
+      match /callerCandidates/{candidateId} {
+        allow read, write: if isAuthenticated();
+      }
+      match /answerCandidates/{candidateId} {
+        allow read, write: if isAuthenticated();
+      }
+    }
+
+    // Default catch-all allow for debugging
+    match /{document=**} {
+      allow read, write: if isAuthenticated();
+    }
+  }
+}

@@ -1,0 +1,155 @@
+{
+  "entities": {
+    "User": {
+      "title": "User",
+      "description": "User profile information",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string" },
+        "name": { "type": "string", "description": "Max 20 chars" },
+        "bio": { "type": "string", "description": "Max 100 chars" },
+        "emoji": { "type": "string", "description": "Max 2 chars" },
+        "arId": { "type": "string", "description": "Unique 4-digit ID, e.g., ar-xxxx" },
+        "isOnline": { "type": "boolean" },
+        "lastChanged": { "type": "string", "format": "date-time" }
+      },
+      "required": ["uid", "name", "emoji", "arId"]
+    },
+    "Contact": {
+      "title": "Contact",
+      "description": "A user's contact",
+      "type": "object",
+      "properties": {
+        "addedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["addedAt"]
+    },
+    "FriendRequest": {
+      "title": "Friend Request",
+      "description": "A friend request received by a user",
+      "type": "object",
+      "properties": {
+        "status": { "type": "string", "enum": ["pending", "accepted", "rejected"] },
+        "timestamp": { "type": "string", "format": "date-time" }
+      },
+      "required": ["status", "timestamp"]
+    },
+    "Chat": {
+      "title": "Chat",
+      "description": "A chat conversation between users",
+      "type": "object",
+      "properties": {
+        "participants": { "type": "array", "items": { "type": "string" } },
+        "lastMessage": { "type": "string" },
+        "lastMessageTime": { "type": "string", "format": "date-time" },
+        "typing": { "type": "object", "additionalProperties": { "type": "boolean" } },
+        "pinnedBy": { "type": "array", "items": { "type": "string" }, "description": "List of UIDs who pinned this chat" }
+      },
+      "required": ["participants"]
+    },
+    "Message": {
+      "title": "Message",
+      "description": "A message within a chat",
+      "type": "object",
+      "properties": {
+        "senderId": { "type": "string" },
+        "text": { "type": "string" },
+        "timestamp": { "type": "string", "format": "date-time" },
+        "replyTo": { "type": "string", "description": "ID of the message being replied to" },
+        "reactions": { "type": "object", "additionalProperties": { "type": "array", "items": { "type": "string" } }, "description": "Emoji to list of UIDs" },
+        "deleted": { "type": "boolean" },
+        "fileUrl": { "type": "string" },
+        "fileName": { "type": "string" },
+        "fileType": { "type": "string" }
+      },
+      "required": ["senderId", "text", "timestamp"]
+    },
+    "UserChat": {
+      "title": "User Chat Metadata",
+      "description": "User-specific metadata for a chat (e.g., unread count, clearedAt)",
+      "type": "object",
+      "properties": {
+        "unreadCount": { "type": "number" },
+        "clearedAt": { "type": "string", "format": "date-time" }
+      }
+    },
+    "Call": {
+      "title": "Call",
+      "description": "WebRTC signaling data for a call",
+      "type": "object",
+      "properties": {
+        "callerId": { "type": "string" },
+        "calleeId": { "type": "string" },
+        "type": { "type": "string", "enum": ["voice", "video"] },
+        "status": { "type": "string", "enum": ["calling", "ongoing", "ended", "missed", "rejected"] },
+        "offer": { "type": "object" },
+        "answer": { "type": "object" },
+        "timestamp": { "type": "string", "format": "date-time" }
+      },
+      "required": ["callerId", "calleeId", "type", "status", "timestamp"]
+    },
+    "CallCandidate": {
+      "title": "Call Candidate",
+      "description": "ICE Candidate for WebRTC",
+      "type": "object",
+      "properties": {
+        "candidate": { "type": "object" }
+      },
+      "required": ["candidate"]
+    },
+    "CallLog": {
+      "title": "Call Log",
+      "description": "Record of a past call",
+      "type": "object",
+      "properties": {
+        "peerId": { "type": "string" },
+        "type": { "type": "string", "enum": ["voice", "video", "missed"] },
+        "duration": { "type": "number" },
+        "timestamp": { "type": "string", "format": "date-time" }
+      },
+      "required": ["peerId", "type", "duration", "timestamp"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": { "$ref": "#/entities/User" },
+      "description": "User profiles"
+    },
+    "/users/{userId}/contacts/{contactId}": {
+      "schema": { "$ref": "#/entities/Contact" },
+      "description": "User's contacts"
+    },
+    "/users/{userId}/requests/{requesterId}": {
+      "schema": { "$ref": "#/entities/FriendRequest" },
+      "description": "Friend requests received by the user"
+    },
+    "/users/{userId}/userChats/{chatId}": {
+      "schema": { "$ref": "#/entities/UserChat" },
+      "description": "User's metadata for chats"
+    },
+    "/users/{userId}/callLogs/{logId}": {
+      "schema": { "$ref": "#/entities/CallLog" },
+      "description": "User's call history"
+    },
+    "/chats/{chatId}": {
+      "schema": { "$ref": "#/entities/Chat" },
+      "description": "Chat conversations"
+    },
+    "/chats/{chatId}/messages/{messageId}": {
+      "schema": { "$ref": "#/entities/Message" },
+      "description": "Messages in a chat"
+    },
+    "/calls/{callId}": {
+      "schema": { "$ref": "#/entities/Call" },
+      "description": "Active calls for WebRTC signaling"
+    },
+    "/calls/{callId}/callerCandidates/{candidateId}": {
+      "schema": { "$ref": "#/entities/CallCandidate" },
+      "description": "Caller ICE candidates"
+    },
+    "/calls/{callId}/calleeCandidates/{candidateId}": {
+      "schema": { "$ref": "#/entities/CallCandidate" },
+      "description": "Callee ICE candidates"
+    }
+  }
+}

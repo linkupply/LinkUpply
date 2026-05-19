@@ -1,0 +1,9 @@
+{
+  "name": "LinkUpply",
+  "description": "A unique, modern, dark, mobile-first chat and calling application with WebRTC and Firebase.",
+  "requestFramePermissions": [
+    "camera",
+    "microphone",
+    "notifications"
+  ]
+}
