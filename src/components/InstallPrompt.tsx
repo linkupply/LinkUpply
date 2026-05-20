@@ -15,41 +15,49 @@ export function InstallPrompt() {
       return;
     }
 
+    // Capture prompt if it fired before React mounted
+    if ((window as any).deferredPrompt) {
+      setDeferredPrompt((window as any).deferredPrompt);
+    }
+
     const handleBeforeInstallPrompt = (e: Event) => {
       e.preventDefault();
       setDeferredPrompt(e);
-      // Wait 4 seconds before showing
-      setTimeout(() => {
-        const hasDismissed = localStorage.getItem('installPromptDismissed');
-        if (!hasDismissed) {
-          setShowPrompt(true);
-        }
-      }, 4000);
+      (window as any).deferredPrompt = e;
+    };
+
+    const handleDeferredReady = () => {
+      if ((window as any).deferredPrompt) {
+        setDeferredPrompt((window as any).deferredPrompt);
+      }
     };
 
     const forceShowPrompt = () => {
-      // Show immediately if triggered by our custom event
+      // Show immediately if triggered by our custom event (e.g. from splash/intro)
       setShowPrompt(true);
     };
 
     window.addEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
+    window.addEventListener('deferredpromptready', handleDeferredReady);
     window.addEventListener('showInstallPrompt', forceShowPrompt);
-
-    // Also trigger manually if not fired but we still want to show UI after 4 sec
-    const fallbackTimeout = setTimeout(() => {
-      if (!deferredPrompt && !isInstalled) {
-        const hasDismissed = localStorage.getItem('installPromptDismissed');
-        if (!hasDismissed) {
-          setShowPrompt(true);
-        }
-      }
-    }, 4000);
 
     return () => {
       window.removeEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
+      window.removeEventListener('deferredpromptready', handleDeferredReady);
       window.removeEventListener('showInstallPrompt', forceShowPrompt);
-      clearTimeout(fallbackTimeout);
     };
+  }, []);
+
+  useEffect(() => {
+    // Auto show prompt if we successfully grabbed the native prompt event,
+    // after a short delay, but only if they haven't dismissed it
+    if (deferredPrompt && !isInstalled) {
+      const hasDismissed = localStorage.getItem('installPromptDismissed');
+      if (!hasDismissed) {
+        const timer = setTimeout(() => setShowPrompt(true), 3000);
+        return () => clearTimeout(timer);
+      }
+    }
   }, [deferredPrompt, isInstalled]);
 
   const handleInstallClick = async () => {
@@ -58,11 +66,18 @@ export function InstallPrompt() {
       const { outcome } = await deferredPrompt.userChoice;
       if (outcome === 'accepted') {
         setShowPrompt(false);
+        localStorage.setItem('installPromptDismissed', 'true'); // don't show custom prompt again if installed
       }
       setDeferredPrompt(null);
+      (window as any).deferredPrompt = null;
     } else {
-      // Provide instruction for manual install
-      alert("To install: tap the browser menu and select 'Add to Home Screen' or 'Install App'.");
+      // Provide instruction for manual install as fallback
+      const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !(window as any).MSStream;
+      if (isIOS) {
+         alert("To install on iOS: tap the Share button at the bottom of the browser, then select 'Add to Home Screen'.");
+      } else {
+         alert("Installation is preparing. Please wait a few seconds and try again, or tap the browser menu and select 'Install app'.");
+      }
       setShowPrompt(false);
     }
   };
@@ -76,7 +91,7 @@ export function InstallPrompt() {
 
   return (
     <AnimatePresence>
-      <div className="fixed inset-0 z-9999 flex items-center justify-center p-4">
+      <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4">
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -113,7 +128,7 @@ export function InstallPrompt() {
             onClick={handleInstallClick}
             className="w-full relative group mb-6"
           >
-            <div className="absolute inset-0 rounded-2xl bg-linear-to-r from-primary via-secondary to-primary blur-lg opacity-60 group-hover:opacity-100 transition duration-500" />
+            <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-primary via-secondary to-primary blur-lg opacity-60 group-hover:opacity-100 transition duration-500" />
             <div className="relative w-full bg-primary text-black font-bold text-lg py-4 rounded-2xl flex items-center justify-center transition-transform group-active:scale-95 shadow-xl">
               Install Now
             </div>
