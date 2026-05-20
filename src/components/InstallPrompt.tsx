@@ -27,10 +27,15 @@ export function InstallPrompt() {
       }, 4000);
     };
 
+    const forceShowPrompt = () => {
+      // Show immediately if triggered by our custom event
+      setShowPrompt(true);
+    };
+
     window.addEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
+    window.addEventListener('showInstallPrompt', forceShowPrompt);
 
     // Also trigger manually if not fired but we still want to show UI after 4 sec
-    // Just a fallback in case browser doesn't support event or it already fired
     const fallbackTimeout = setTimeout(() => {
       if (!deferredPrompt && !isInstalled) {
         const hasDismissed = localStorage.getItem('installPromptDismissed');
@@ -42,6 +47,7 @@ export function InstallPrompt() {
 
     return () => {
       window.removeEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
+      window.removeEventListener('showInstallPrompt', forceShowPrompt);
       clearTimeout(fallbackTimeout);
     };
   }, [deferredPrompt, isInstalled]);
