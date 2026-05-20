@@ -84,9 +84,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }, []);
 
   useEffect(() => {
-    console.log("AuthProvider: Starting auth listener");
+    // Starting auth listener
     const unsubscribeAuth = onAuthStateChanged(auth, (currentUser) => {
-      console.log("AuthProvider: Auth state changed", currentUser?.uid);
+      // Auth state changed
       setUser(currentUser);
       setIsLoggingOut(false); // Reset logging out state when auth state changes
       setIsDeleting(false); // Reset deleting state when auth state changes
@@ -102,7 +102,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     if (!user) return;
     
     setLoading(true); // Ensure we are loading when a new user is detected
-    console.log("AuthProvider: Starting profile listener for", user.uid);
     const userRef = doc(db, 'users', user.uid);
     
     // Heartbeat to keep user online
@@ -176,7 +175,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     document.addEventListener('visibilitychange', handleVisibility);
 
     const unsubscribeProfile = onSnapshot(userRef, async (docSnap) => {
-      console.log("AuthProvider: Profile snapshot received", docSnap.exists());
+      // Profile snapshot received
       if (docSnap.exists()) {
         const data = docSnap.data() as UserProfile;
         setProfile(data);
@@ -213,7 +212,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
     // Safety timeout to ensure loading state resolves
     const safetyTimeout = setTimeout(() => {
-      console.log("AuthProvider: Safety timeout reached, forcing loading false");
+      // Safety timeout reached
       setLoading(false);
     }, 15000); // Increased to 15 seconds for slower connections
 
