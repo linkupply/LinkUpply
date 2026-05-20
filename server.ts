@@ -10,19 +10,30 @@ dotenv.config();
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-// --- Firebase Admin Setup ---
+// Initialize Firebase Admin
 const serviceAccountPath = path.join(process.cwd(), "service-account.json");
 
 function initializeFirebaseAdmin() {
   try {
     if (!admin.apps.length) {
-      admin.initializeApp({
-        credential: admin.credential.cert(serviceAccountPath),
-      });
-      console.log("✅ Firebase Admin initialized successfully.");
+      if (process.env.FIREBASE_SERVICE_ACCOUNT) {
+        const serviceAccount = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT);
+        admin.initializeApp({
+          credential: admin.credential.cert(serviceAccount),
+        });
+        console.log("Firebase Admin initialized successfully via ENV variable.");
+      } else {
+        admin.initializeApp({
+          credential: admin.credential.cert(serviceAccountPath),
+        });
+        console.log(
+          "Firebase Admin initialized successfully with service account at:",
+          serviceAccountPath,
+        );
+      }
     }
   } catch (e) {
-    console.error("❌ Firebase Admin initialization error:", e);
+    console.error("Firebase Admin initialization error:", e);
   }
 }
 
@@ -34,48 +45,37 @@ async function startServer() {
 
   app.use(express.json());
 
-  // --- Notification API Route ---
+  // API Route for sending notifications
   app.post("/api/notify", async (req, res) => {
-    const { token, tokens, title, body, data, image } = req.body;
-    
-    // Multiple tokens ya single token handle karne ke liye
+    const { token, tokens, title, body, data } = req.body;
     let targetTokens = tokens || (token ? [token] : []);
 
-    if (!targetTokens.length) {
+    if (!targetTokens.length)
       return res.status(400).json({ error: "Tokens are required" });
-    }
 
     try {
-      /**
-       * CRITICAL: Yahan 'notification' key bilkul nahi honi chahiye.
-       * Agar 'notification' object miley ga toh Windows/Chrome Service Worker 
-       * ko bypass kar ke purani notification dikhayega.
-       */
       const message: any = {
         data: {
           title: String(title || "New Message"),
           body: String(body || ""),
           senderId: String(data?.senderId || ""),
           chatId: String(data?.chatId || ""),
-          icon: String(image || "https://linkupply-4ffb4.web.app/icon-192.png"),
-          type: "message", // Custom type for logic handling
+          icon: String(
+            req.body.image || "https://linkupply-4ffb4.web.app/icon-192.png",
+          ),
+          type: "message",
         },
         tokens: targetTokens,
       };
 
-      console.log("🚀 Sending Data-Only Payload to FCM:", JSON.stringify(message));
-      
       const response = await admin.messaging().sendEachForMulticast(message);
-      
-      console.log("✅ FCM Response:", response.successCount, "sent successfully.");
       res.json({ success: true, response });
     } catch (error: any) {
-      console.error("❌ FCM Send Error:", error);
       res.status(500).json({ error: error.message });
     }
   });
 
-  // --- Vite / Production Middleware ---
+  // Vite middleware for development
   if (process.env.NODE_ENV !== "production") {
     const vite = await createViteServer({
       server: { middlewareMode: true },
@@ -91,7 +91,7 @@ async function startServer() {
   }
 
   app.listen(PORT, "0.0.0.0", () => {
-    console.log(`🚀 Server running on http://localhost:${PORT}`);
+    console.log(`Server running on http://localhost:${PORT}`);
   });
 }
 
