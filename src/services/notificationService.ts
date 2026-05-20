@@ -12,7 +12,7 @@ export const registerWebPush = async () => {
         if (permission === 'granted') {
           try {
              const registration = await navigator.serviceWorker.register('/firebase-messaging-sw.js');
-             console.log('Service Worker registered successfully!', registration);
+             // Service Worker registered
              
              const { auth, db, messaging } = await import("../firebase");
              if (auth.currentUser && messaging) {
@@ -20,8 +20,8 @@ export const registerWebPush = async () => {
                 const currentToken = await getToken(messaging, { 
                   vapidKey: "BL9Mv__dKofjB-uA2T7hssYwS6Xm06lJ2-F_jVv-oOpx7gN8P5x0gD9xV9OqZzH96jB0p_n6-yYw9zHqXmJ45lY",
                   serviceWorkerRegistration: registration 
-                }).catch((e) => {
-                  console.error('Error getting token', e);
+                }).catch(() => {
+                  // Ignore token fetching error to keep console clean
                   return null;
                 });
 
@@ -37,14 +37,14 @@ export const registerWebPush = async () => {
                 }
              }
           } catch(err) {
-             console.log('FCM generic error', err);
+             // FCM generic error omitted
           }
         } else {
-          console.log('Notification permission not granted.');
+          // Notification permission not granted.
         }
       }
     } catch (e) {
-      console.log('Web Push init error:', e);
+      // Web Push init error omitted
     }
 };
 
