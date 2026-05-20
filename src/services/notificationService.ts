@@ -107,9 +107,22 @@ export const showSystemNotification = async (
 
   try {
     if (typeof window !== 'undefined' && 'Notification' in window && Notification.permission === 'granted') {
+       if ('serviceWorker' in navigator) {
+          const reg = await navigator.serviceWorker.ready;
+          if (reg) {
+            await reg.showNotification(title, {
+              body: body,
+              icon: photoURL || '/logo.png',
+              badge: '/logo.png',
+              vibrate: [200, 100, 200]
+            } as NotificationOptions & { vibrate?: number[] });
+            return;
+          }
+       }
+       
        new Notification(title, {
           body: body,
-          icon: photoURL || '/icon-192.png'
+          icon: photoURL || '/logo.png'
        });
     }
   } catch(e) {
