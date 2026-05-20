@@ -12,6 +12,7 @@ import { Logo } from './components/Logo';
 import { db } from './firebase';
 import { doc, updateDoc, serverTimestamp } from 'firebase/firestore';
 import { InstallPrompt } from './components/InstallPrompt';
+import { SplashScreen } from './components/SplashScreen';
 
 function AppContent() {
   const { user, profile, loading, isLoggingOut, isDeleting } = useAuth();
@@ -69,10 +70,12 @@ function AppContent() {
 export default function App() {
   return (
     <ErrorBoundary>
-      <AuthProvider>
-        <AppContent />
-        <InstallPrompt />
-      </AuthProvider>
+      <SplashScreen>
+        <AuthProvider>
+          <AppContent />
+          <InstallPrompt />
+        </AuthProvider>
+      </SplashScreen>
     </ErrorBoundary>
   );
 }
