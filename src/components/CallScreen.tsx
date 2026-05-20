@@ -21,6 +21,9 @@ export function CallScreen({ contact, type, isIncoming, callId, onEnd }: { conta
   const pcRef = useRef<RTCPeerConnection | null>(null);
   const localStreamRef = useRef<MediaStream | null>(null);
   const audioRef = useRef<HTMLAudioElement | null>(null);
+  
+  // Track all nested Firestore subscriptions for robust cleanup
+  const unsubsRef = useRef<(() => void)[]>([]);
 
   // Handle incoming call ringing state & listening for caller hangup
   useEffect(() => {
@@ -107,8 +110,11 @@ export function CallScreen({ contact, type, isIncoming, callId, onEnd }: { conta
 
       pc.oniceconnectionstatechange = () => {
         console.log('ICE Connection State:', pc.iceConnectionState);
-        if (pc.iceConnectionState === 'failed') {
-          handleEndCall();
+        if (pc.iceConnectionState === 'connected' || pc.iceConnectionState === 'completed') {
+          setStatus('ongoing');
+        }
+        if (pc.iceConnectionState === 'disconnected') {
+           console.log('ICE disconnected - waiting for possible recovery...');
         }
       };
 
@@ -117,11 +123,20 @@ export function CallScreen({ contact, type, isIncoming, callId, onEnd }: { conta
       });
 
       pc.ontrack = (event) => {
-        if (remoteVideoRef.current) {
-          remoteVideoRef.current.srcObject = event.streams[0];
+        const remoteStream = event.streams && event.streams[0] ? event.streams[0] : new MediaStream();
+        if (remoteStream.getTracks().length === 0) {
+          remoteStream.addTrack(event.track);
         }
-        if (remoteAudioRef.current) {
-          remoteAudioRef.current.srcObject = event.streams[0];
+
+        // Stream routing fix: Video handles its own audio natively, separate audio is only for voice calls
+        if (type === 'video' && remoteVideoRef.current) {
+          if (remoteVideoRef.current.srcObject !== remoteStream) {
+            remoteVideoRef.current.srcObject = remoteStream;
+          }
+        } else if (type === 'voice' && remoteAudioRef.current) {
+          if (remoteAudioRef.current.srcObject !== remoteStream) {
+            remoteAudioRef.current.srcObject = remoteStream;
+          }
         }
       };
 
@@ -156,7 +171,7 @@ export function CallScreen({ contact, type, isIncoming, callId, onEnd }: { conta
           timestamp: serverTimestamp()
         });
 
-        onSnapshot(callDoc, (snapshot) => {
+        const unsubCall = onSnapshot(callDoc, async (snapshot) => {
           const data = snapshot.data();
           if (!snapshot.exists() || data?.status === 'ended' || data?.status === 'rejected') {
             handleEndCall();
@@ -164,33 +179,23 @@ export function CallScreen({ contact, type, isIncoming, callId, onEnd }: { conta
           }
           if (!pc.currentRemoteDescription && data?.answer) {
             const answerDescription = new RTCSessionDescription(data.answer);
-            pc.setRemoteDescription(answerDescription).then(() => {
-              setStatus('ongoing');
-              stopRingtone();
-              
-              if ((pc as any).pendingCandidates) {
-                (pc as any).pendingCandidates.forEach((candidate: any) => {
-                  pc.addIceCandidate(new RTCIceCandidate(candidate)).catch(e => console.error("Error adding pending candidate", e));
-                });
-                (pc as any).pendingCandidates = [];
-              }
+            await pc.setRemoteDescription(answerDescription);
+            setStatus('ongoing');
+            stopRingtone();
+            
+            // Sync Fix: Callee candidates are downloaded safely ONLY after Remote Description is attached
+            const unsubAnswerCandidates = onSnapshot(answerCandidates, (candSnapshot) => {
+              candSnapshot.docChanges().forEach((change) => {
+                if (change.type === 'added') {
+                  const candData = change.doc.data();
+                  pc.addIceCandidate(new RTCIceCandidate(candData.candidate)).catch(e => console.error("Error adding candidate", e));
+                }
+              });
             });
+            unsubsRef.current.push(unsubAnswerCandidates);
           }
         });
-
-        onSnapshot(answerCandidates, (snapshot) => {
-          snapshot.docChanges().forEach((change) => {
-            if (change.type === 'added') {
-              const data = change.doc.data();
-              if (pc.remoteDescription) {
-                pc.addIceCandidate(new RTCIceCandidate(data.candidate));
-              } else {
-                (pc as any).pendingCandidates = (pc as any).pendingCandidates || [];
-                (pc as any).pendingCandidates.push(data.candidate);
-              }
-            }
-          });
-        });
+        unsubsRef.current.push(unsubCall);
 
       } else {
         // Callee answers
@@ -215,34 +220,24 @@ export function CallScreen({ contact, type, isIncoming, callId, onEnd }: { conta
         setStatus('ongoing');
         stopRingtone();
 
-        onSnapshot(callDoc, async (snapshot) => {
+        const unsubCall = onSnapshot(callDoc, (snapshot) => {
           const data = snapshot.data();
           if (!snapshot.exists() || data?.status === 'ended') {
             handleEndCall();
           }
         });
+        unsubsRef.current.push(unsubCall);
 
-        onSnapshot(offerCandidates, (snapshot) => {
-          snapshot.docChanges().forEach((change) => {
+        // Callee listens safely because remote description was already set above
+        const unsubOfferCandidates = onSnapshot(offerCandidates, (candSnapshot) => {
+          candSnapshot.docChanges().forEach((change) => {
             if (change.type === 'added') {
-              const data = change.doc.data();
-              if (pc.remoteDescription) {
-                pc.addIceCandidate(new RTCIceCandidate(data.candidate));
-              } else {
-                (pc as any).pendingCandidates = (pc as any).pendingCandidates || [];
-                (pc as any).pendingCandidates.push(data.candidate);
-              }
+              const candData = change.doc.data();
+              pc.addIceCandidate(new RTCIceCandidate(candData.candidate)).catch(e => console.error("Error adding candidate", e));
             }
           });
         });
-        
-        // Add any pending candidates after remote description is set
-        if ((pc as any).pendingCandidates) {
-          (pc as any).pendingCandidates.forEach((candidate: any) => {
-            pc.addIceCandidate(new RTCIceCandidate(candidate)).catch(e => console.error("Error adding pending candidate", e));
-          });
-          (pc as any).pendingCandidates = [];
-        }
+        unsubsRef.current.push(unsubOfferCandidates);
       }
     };
 
@@ -252,6 +247,9 @@ export function CallScreen({ contact, type, isIncoming, callId, onEnd }: { conta
       stopRingtone();
       localStreamRef.current?.getTracks().forEach(track => track.stop());
       pcRef.current?.close();
+      // Unsubscribe all active Firestore streams to prevent background crashes
+      unsubsRef.current.forEach(unsub => unsub());
+      unsubsRef.current = [];
     };
   }, [user, hasAccepted]);
 
@@ -271,7 +269,10 @@ export function CallScreen({ contact, type, isIncoming, callId, onEnd }: { conta
     stopRingtone();
     setStatus('ended');
     localStreamRef.current?.getTracks().forEach(track => track.stop());
-    pcRef.current?.close();
+    if (pcRef.current) {
+      pcRef.current.close();
+      pcRef.current = null;
+    }
     
     if (user) {
       try {
@@ -351,8 +352,8 @@ export function CallScreen({ contact, type, isIncoming, callId, onEnd }: { conta
       exit={{ opacity: 0 }}
       className="absolute inset-0 z-150 bg-black flex flex-col text-white"
     >
-      {/* Hidden Audio Element for Voice Calls */}
-      <audio ref={remoteAudioRef} autoPlay playsInline className="hidden" />
+      {/* Hidden Audio Element for Voice Calls Only */}
+      {type === 'voice' && <audio ref={remoteAudioRef} autoPlay playsInline className="hidden" />}
 
       {/* Video Elements */}
       {type === 'video' && (
