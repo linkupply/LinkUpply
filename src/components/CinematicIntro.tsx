@@ -13,15 +13,26 @@ export function CinematicIntro() {
       const t1 = setTimeout(() => setStage(2), 1000); // "Build By"
       const t2 = setTimeout(() => setStage(3), 2500); // "MUHAMMAD"
       const t3 = setTimeout(() => setStage(4), 3800); // "ATIF"
+      const t4 = setTimeout(() => {
+        setIsOpen(false);
+        window.dispatchEvent(new Event('showInstallPrompt'));
+      }, 7000); // Auto-close and trigger prompt
+
       return () => {
         clearTimeout(t1);
         clearTimeout(t2);
         clearTimeout(t3);
+        clearTimeout(t4);
       };
     } else {
       setStage(0);
     }
   }, [isOpen]);
+
+  const handleSkip = () => {
+    setIsOpen(false);
+    window.dispatchEvent(new Event('showInstallPrompt'));
+  };
 
   const overlayContent = (
     <AnimatePresence>
@@ -78,7 +89,7 @@ export function CinematicIntro() {
           />
 
           <button
-            onClick={() => setIsOpen(false)}
+            onClick={handleSkip}
             className="absolute top-8 right-8 px-6 py-2 border border-white/20 rounded-full text-white/70 hover:text-white hover:bg-white/10 hover:border-white/50 transition-all z-50 text-xs tracking-[0.2em] uppercase font-bold backdrop-blur-md"
           >
             Skip
