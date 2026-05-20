@@ -16,7 +16,6 @@ import { SplashScreen } from './components/SplashScreen';
 
 function AppContent() {
   const { user, profile, loading, isLoggingOut, isDeleting } = useAuth();
-  console.log("AppContent: State", { user: user?.uid, profile: !!profile, loading, isLoggingOut, isDeleting });
 
   useEffect(() => {
     const handleUnload = () => {
@@ -48,7 +47,7 @@ function AppContent() {
 
   if (loading || isLoggingOut || isDeleting) {
     return (
-      <div className="flex-1 flex flex-col items-center justify-center text-white gap-4">
+      <div className="fixed inset-0 flex flex-col items-center justify-center text-white gap-4 bg-[#0a0f1c] z-50">
         <Logo className="w-16 h-16 animate-pulse" />
         <div className="flex items-center gap-2">
           <div className="w-2 h-2 bg-primary rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
