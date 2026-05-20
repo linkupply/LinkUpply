@@ -72,7 +72,10 @@ export function SplashScreen({ children }: { children: React.ReactNode }) {
       </AnimatePresence>
 
       {/* Actual App Content */}
-      <div style={{ opacity: showSplash ? 0 : 1, transition: 'opacity 0.8s ease-out' }}>
+      <div 
+        className="flex-1 w-full flex flex-col h-full"
+        style={{ opacity: showSplash ? 0 : 1, transition: 'opacity 0.8s ease-out' }}
+      >
         {children}
       </div>
     </>
