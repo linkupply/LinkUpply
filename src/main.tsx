@@ -5,6 +5,17 @@ import './index.css';
 import { initWebNotifications } from './services/notificationService';
 import { Analytics } from "@vercel/analytics/react";
 
+// Register service worker for PWA
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('/firebase-messaging-sw.js').then((registration) => {
+      console.log('SW registered:', registration);
+    }).catch((registrationError) => {
+      console.log('SW registration failed:', registrationError);
+    });
+  });
+}
+
 // Initialize Notifications
 initWebNotifications().catch(console.error);
 
