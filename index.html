@@ -6,11 +6,19 @@
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
     <meta name="theme-color" content="#000000" />
+     <link rel="icon" type="image/png" href="/logo1.jpg" />
     <link rel="manifest" href="/manifest.json" />
-    <link rel="icon" type="image/jpg" href="/logo1.jpg" />
     <title>LinkUpply</title>
+    <script>
+      window.deferredPrompt = null;
+      window.addEventListener('beforeinstallprompt', (e) => {
+        e.preventDefault();
+        window.deferredPrompt = e;
+        window.dispatchEvent(new Event('deferredpromptready'));
+      });
+    </script>
   </head>
-  <body>
+  <body style="background-color: #0f172a; color: white; margin: 0; min-height: 100dvh;">
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
   </body>
