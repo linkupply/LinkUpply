@@ -263,7 +263,7 @@ export function Auth() {
   if (!user) {
     return (
       <div 
-        className="flex-1 flex flex-col items-center justify-start p-4 min-h-dvh overflow-y-auto pt-10 pb-10 bg-transparent"
+        className="h-full w-full flex flex-col items-center justify-start p-4 overflow-y-auto pt-10 pb-10 bg-transparent"
         dir={lang === 'ur' ? 'rtl' : 'ltr'}
       >
         <motion.div 
@@ -397,7 +397,7 @@ export function Auth() {
   if (!profile) {
     return (
       <div 
-        className="flex-1 flex flex-col p-4 md:p-8 overflow-y-auto"
+        className="h-full w-full flex flex-col p-4 md:p-8 overflow-y-auto custom-scrollbar"
         dir={lang === 'ur' ? 'rtl' : 'ltr'}
       >
         <motion.div 
