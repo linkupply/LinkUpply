@@ -9,15 +9,15 @@ import { Analytics } from "@vercel/analytics/react";
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
     navigator.serviceWorker.register('/firebase-messaging-sw.js').then((registration) => {
-      console.log('SW registered:', registration);
+      // SW registered
     }).catch((registrationError) => {
-      console.log('SW registration failed:', registrationError);
+      // SW failed
     });
   });
 }
 
 // Initialize Notifications
-initWebNotifications().catch(console.error);
+initWebNotifications().catch(() => {});
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
