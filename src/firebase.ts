@@ -2,7 +2,17 @@ import { initializeApp } from 'firebase/app';
 import { getAuth } from 'firebase/auth';
 import { getFirestore } from 'firebase/firestore';
 import { getStorage } from 'firebase/storage';
-import firebaseConfig from '../firebase-applet-config.json';
+
+const firebaseConfig = {
+  "apiKey": "AIzaSyAcRg7TU3CXGCpZTzX9QA8KaX_TgAYQaIU",
+  "authDomain": "linkup-4ffb4.firebaseapp.com",
+  "projectId": "linkup-4ffb4",
+  "storageBucket": "linkup-4ffb4.firebasestorage.app",
+  "messagingSenderId": "997540535836",
+  "appId": "1:997540535836:web:37dfbcbd2d32515a2c49d9",
+  "measurementId": "G-D2S564ZS3N",
+  "firestoreDatabaseId": "(default)"
+};
 
 const app = initializeApp(firebaseConfig);
 export const auth = getAuth(app);
