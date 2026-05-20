@@ -1,80 +1,42 @@
-/**
- * @license
- * SPDX-License-Identifier: Apache-2.0
- */
+import {StrictMode} from 'react';
 
-import { useEffect } from 'react';
-import { AuthProvider, useAuth } from './store';
-import { Auth } from './components/Auth';
-import { Main } from './components/Main';
-import { ErrorBoundary } from './components/ErrorBoundary';
-import { Logo } from './components/Logo';
-import { db } from './firebase';
-import { doc, updateDoc, serverTimestamp } from 'firebase/firestore';
-import { InstallPrompt } from './components/InstallPrompt';
-import { SplashScreen } from './components/SplashScreen';
-
-function AppContent() {
-  const { user, profile, loading, isLoggingOut, isDeleting } = useAuth();
-
-  useEffect(() => {
-    const handleUnload = () => {
-      if (user?.uid) {
-        // This is a best-effort update for web/PWA
-        const userRef = doc(db, 'users', user.uid);
-        updateDoc(userRef, { isOnline: false, lastChanged: serverTimestamp() });
-      }
-    };
-
-    const handleVisibilityChange = () => {
-      if (user?.uid) {
-        const userRef = doc(db, 'users', user.uid);
-        updateDoc(userRef, { 
-          isOnline: document.visibilityState === 'visible',
-          lastChanged: serverTimestamp(),
-          lastSeen: serverTimestamp()
-        });
-      }
-    };
-
-    window.addEventListener('beforeunload', handleUnload);
-    document.addEventListener('visibilitychange', handleVisibilityChange);
-    return () => {
-      window.removeEventListener('beforeunload', handleUnload);
-      document.removeEventListener('visibilitychange', handleVisibilityChange);
-    };
-  }, [user?.uid]);
-
-  if (loading || isLoggingOut || isDeleting) {
-    return (
-      <div className="fixed inset-0 flex flex-col items-center justify-center text-white gap-4">
-        <Logo className="w-16 h-16 animate-pulse" />
-        <div className="flex items-center gap-2">
-          <div className="w-2 h-2 bg-primary rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
-          <div className="w-2 h-2 bg-primary rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
-          <div className="w-2 h-2 bg-primary rounded-full animate-bounce" style={{ animationDelay: '300ms' }} />
-        </div>
-        <p className="text-white/40 text-xs font-bold uppercase tracking-widest mt-2">Connecting to LinkUpply...</p>
-      </div>
-    );
+// Global error catcher for UI debugging
+window.addEventListener('error', (e) => {
+  const root = document.getElementById('root');
+  if (root && root.innerHTML === '') {
+    root.innerHTML = `<div style="color:red; padding:20px; font-family:monospace; word-break:break-all;"><b>FATAL ERROR:</b> ${e.message}<br/>${e.filename}:${e.lineno}<br/><pre>${e.error?.stack}</pre></div>`;
   }
-
-  if (!user || !profile) {
-    return <Auth />;
+});
+window.addEventListener('unhandledrejection', (e) => {
+  const root = document.getElementById('root');
+  if (root && root.innerHTML === '') {
+    root.innerHTML = `<div style="color:red; padding:20px; font-family:monospace; word-break:break-all;"><b>PROMISE REJECTION:</b> ${e.reason?.message || e.reason}<br/><pre>${e.reason?.stack}</pre></div>`;
   }
+});
 
-  return <Main />;
+import {createRoot} from 'react-dom/client';
+import App from './App.tsx';
+import './index.css';
+import { initWebNotifications } from './services/notificationService';
+import { Analytics } from "@vercel/analytics/react";
+
+// Register service worker for PWA
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('/firebase-messaging-sw.js').then((registration) => {
+      // SW registered
+    }).catch((registrationError) => {
+      // SW failed
+    });
+  });
 }
 
-export default function App() {
-  return (
-    <ErrorBoundary>
-      <SplashScreen>
-        <AuthProvider>
-          <AppContent />
-          <InstallPrompt />
-        </AuthProvider>
-      </SplashScreen>
-    </ErrorBoundary>
-  );
-}
+// Initialize Notifications
+initWebNotifications().catch(() => {});
+
+createRoot(document.getElementById('root')!).render(
+  <StrictMode>
+    <App />
+    <Analytics />
+  </StrictMode>,
+);
