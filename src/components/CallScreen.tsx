@@ -17,6 +17,7 @@ export function CallScreen({ contact, type, isIncoming, callId, onEnd }: { conta
   const [isVideoOff, setIsVideoOff] = useState(type === 'voice');
   const localVideoRef = useRef<HTMLVideoElement>(null);
   const remoteVideoRef = useRef<HTMLVideoElement>(null);
+  const remoteAudioRef = useRef<HTMLAudioElement>(null);
   const pcRef = useRef<RTCPeerConnection | null>(null);
   const localStreamRef = useRef<MediaStream | null>(null);
   const audioRef = useRef<HTMLAudioElement | null>(null);
@@ -75,7 +76,7 @@ export function CallScreen({ contact, type, isIncoming, callId, onEnd }: { conta
         }
 
         const stream = await navigator.mediaDevices.getUserMedia({
-          video: type === 'video',
+          video: type === 'video' ? { facingMode: "user" } : false,
           audio: true
         });
         localStreamRef.current = stream;
@@ -97,14 +98,16 @@ export function CallScreen({ contact, type, isIncoming, callId, onEnd }: { conta
         iceServers: [
           { urls: ['stun:stun1.l.google.com:19302', 'stun:stun2.l.google.com:19302'] },
           { urls: ['stun:global.stun.twilio.com:3478'] },
-          { urls: ['stun:stun.l.google.com:19302'] }
+          { urls: ['stun:stun.l.google.com:19302'] },
+          { urls: ['stun:stun.services.mozilla.com'] }
         ]
       };
       const pc = new RTCPeerConnection(servers);
       pcRef.current = pc;
 
       pc.oniceconnectionstatechange = () => {
-        if (pc.iceConnectionState === 'disconnected' || pc.iceConnectionState === 'failed') {
+        console.log('ICE Connection State:', pc.iceConnectionState);
+        if (pc.iceConnectionState === 'failed') {
           handleEndCall();
         }
       };
@@ -116,6 +119,9 @@ export function CallScreen({ contact, type, isIncoming, callId, onEnd }: { conta
       pc.ontrack = (event) => {
         if (remoteVideoRef.current) {
           remoteVideoRef.current.srcObject = event.streams[0];
+        }
+        if (remoteAudioRef.current) {
+          remoteAudioRef.current.srcObject = event.streams[0];
         }
       };
 
@@ -345,6 +351,9 @@ export function CallScreen({ contact, type, isIncoming, callId, onEnd }: { conta
       exit={{ opacity: 0 }}
       className="absolute inset-0 z-150 bg-black flex flex-col text-white"
     >
+      {/* Hidden Audio Element for Voice Calls */}
+      <audio ref={remoteAudioRef} autoPlay playsInline className="hidden" />
+
       {/* Video Elements */}
       {type === 'video' && (
         <div className="flex-1 relative bg-black">
