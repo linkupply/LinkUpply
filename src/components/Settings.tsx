@@ -538,7 +538,7 @@ export function Settings() {
             animate={{ opacity: 1, x: "0%" }}
             exit={{ opacity: 0, x: "-50%" }}
             transition={{ type: "spring", stiffness: 300, damping: 30 }}
-            className="p-4 md:px-6 md:py-4 h-full overflow-y-auto custom-scrollbar flex flex-col w-full absolute inset-0 bg-[#0a0f1c] pb-24 md:pb-4"
+            className="p-4 md:px-6 md:py-4 h-full overflow-y-auto custom-scrollbar flex flex-col w-full absolute inset-0 bg-[#0a0f1c]"
           >
             <h2 className="text-2xl font-bold text-white tracking-tight mb-6 mt-2 shrink-0">{t("Settings")}</h2>
             <div 
@@ -593,7 +593,7 @@ export function Settings() {
             animate={{ opacity: 1, x: "0%" }}
             exit={{ opacity: 0, x: "50%" }}
             transition={{ type: "spring", stiffness: 300, damping: 30 }}
-            className="absolute inset-0 bg-[#0a0f1c] z-10 flex flex-col overflow-y-auto custom-scrollbar pb-24 md:pb-4"
+            className="absolute inset-0 bg-[#0a0f1c] z-10 flex flex-col overflow-y-auto custom-scrollbar"
           >
             <div className="flex items-center gap-4 p-4 sticky top-0 bg-[#0a0f1c]/80 backdrop-blur-md z-20 shrink-0 border-b border-white/5">
               <button
@@ -768,6 +768,11 @@ export function Settings() {
                       <h4 className="text-white font-bold uppercase tracking-widest text-sm">4. Your Rights</h4>
                       <p>You have the right to delete your account and all associated data at any time through the Settings menu. This action is permanent and erases your presence from our database.</p>
                     </div>
+
+                    <div className="space-y-4">
+                      <h4 className="text-white font-bold uppercase tracking-widest text-sm">5. Portfolio Project & Hosting</h4>
+                      <p>Please note that LinkUpply is a portfolio project created to demonstrate development skills and is hosted on Netlify. While we strive to protect your data using industry-standard tools, this is not a commercial product.</p>
+                    </div>
                   </div>
                 </section>
               </div>
@@ -860,3 +865,4 @@ export function Settings() {
     </motion.div>
   );
 }
+  
