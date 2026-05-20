@@ -35,6 +35,12 @@ self.addEventListener("activate", (event) => {
   event.waitUntil(self.clients.claim());
 });
 
+// Required for PWA WebAPK generation on Android
+self.addEventListener('fetch', (event) => {
+  // Empty fetch handler is enough to satisfy the PWA installability requirements
+  // though typically you'd want to serve offline fallback pages here.
+});
+
 messaging.onBackgroundMessage((payload) => {
   console.log("FCM Background Message Received:", payload);
 
