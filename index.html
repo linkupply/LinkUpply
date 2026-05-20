@@ -6,7 +6,7 @@
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
     <meta name="theme-color" content="#000000" />
-     <link rel="icon" type="image/png" href="/logo1.jpg" />
+    <link rel="icon" type="image/png" href="/logo1.jpg" />
     <link rel="manifest" href="/manifest.json" />
     <title>LinkUpply</title>
     <script>
@@ -19,7 +19,15 @@
     </script>
   </head>
   <body style="background-color: #0f172a; color: white; margin: 0; min-height: 100dvh;">
-    <div id="root"></div>
+    <div id="root">
+      <div style="display: flex; height: 100dvh; width: 100%; align-items: center; justify-content: center; flex-direction: column; gap: 16px;">
+        <svg fill="none" height="48" viewBox="0 0 24 24" width="48" xmlns="http://www.w3.org/2000/svg">
+          <path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z" stroke="#3b82f6" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+          <path d="M22 12C22 14.6522 20.9464 17.1957 19.0711 19.0711C17.1957 20.9464 14.6522 22 12 22C9.34784 22 6.8043 20.9464 4.92893 19.0711C3.05357 17.1957 2 14.6522 2 12" stroke="#22d3ee" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+        </svg>
+        <span style="font-family: sans-serif; font-weight: bold; color: #94a3b8; font-size: 14px; letter-spacing: 2px; text-transform: uppercase;">Booting up System...</span>
+      </div>
+    </div>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>
