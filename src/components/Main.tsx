@@ -468,18 +468,18 @@ export function Main() {
 
   return (
     <div 
-      className="flex h-dvh w-full bg-transparent overflow-hidden object-contain relative"
+      className="flex h-dvh w-full bg-[#f8fafc] overflow-hidden object-contain relative"
       dir={lang === 'ur' ? 'rtl' : 'ltr'}
     >
       {/* Desktop Side Rail */}
-      <nav className="hidden md:flex flex-col w-20 lg:w-22.5 border-r border-[#0f172a]/80 bg-black/40 backdrop-blur-3xl items-center py-6 z-60 shrink-0 shadow-[4px_0_24px_rgba(0,0,0,0.2)]">
-        <Logo className="w-10 h-10 mb-8 drop-shadow-[0_0_15px_rgba(255,255,255,0.15)]" />
+      <nav className="hidden md:flex flex-col w-20 lg:w-22.5 border-r border-gray-200 bg-white items-center py-6 z-60 shrink-0 shadow-sm">
+        <Logo className="w-10 h-10 mb-8" />
         <div className="flex flex-col gap-6 w-full items-center">
           {navItems.map((tab) => (
             <button
               key={tab.id}
               onClick={() => setActiveTab(tab.id as any)}
-              className={`flex flex-col items-center justify-center relative w-14 h-14 rounded-2xl group transition-all duration-300 ${activeTab === tab.id ? "text-primary bg-primary/10" : "text-white/40 hover:text-white/90 hover:bg-white/5"}`}
+              className={`flex flex-col items-center justify-center relative w-14 h-14 rounded-2xl group transition-all duration-300 ${activeTab === tab.id ? "text-primary bg-primary/10" : "text-gray-400 hover:text-gray-900 hover:bg-gray-100"}`}
             >
               <div className="relative z-10">
                 {typeof tab.icon === "function" ? (
@@ -491,7 +491,7 @@ export function Main() {
                   })
                 )}
                 {tab.id === "home" && totalUnread > 0 && (
-                  <span className="absolute -top-1.5 -right-1.5 bg-linear-to-br from-red-500 to-pink-500 text-white text-[10px] font-bold rounded-full min-w-4.5 h-4.5 px-1 flex items-center justify-center border-2 border-black shadow-[0_0_10px_rgba(239,68,68,0.5)]">
+                  <span className="absolute -top-1.5 -right-1.5 bg-linear-to-br from-red-500 to-pink-500 text-gray-900 text-[10px] font-bold rounded-full min-w-4.5 h-4.5 px-1 flex items-center justify-center border-2 border-gray-200 shadow-[0_0_10px_rgba(239,68,68,0.5)]">
                     {totalUnread > 99 ? "99+" : totalUnread}
                   </span>
                 )}
@@ -528,7 +528,7 @@ export function Main() {
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
-                className="absolute inset-0 bg-black/60 backdrop-blur-sm"
+                className="absolute inset-0 bg-white/60 backdrop-blur-sm"
                 onClick={() => setForwardingMsg(null)}
               />
               <motion.div
@@ -537,7 +537,7 @@ export function Main() {
                 exit={{ scale: 0.9, opacity: 0 }}
                 className="relative w-full max-w-md bg-container rounded-3xl shadow-2xl overflow-hidden flex flex-col max-h-[80vh]"
               >
-                <div className="p-6 border-b border-white/5 flex justify-between items-center">
+                <div className="p-6 border-b border-gray-100 flex justify-between items-center">
                   <h2 className="text-xl font-bold">{t("Forward to...")}</h2>
                   <button
                     onClick={() => setForwardingMsg(null)}
@@ -551,7 +551,7 @@ export function Main() {
                     <button
                       key={contact.id}
                       onClick={() => handleForward(contact)}
-                      className="w-full flex items-center gap-4 p-4 hover:bg-white/5 rounded-2xl transition"
+                      className="w-full flex items-center gap-4 p-4 hover:bg-gray-50 rounded-2xl transition"
                     >
                       <img
                         src={emojiToSVG(contact.emoji)}
@@ -576,18 +576,18 @@ export function Main() {
         <div
           className={`
           ${activeChat ? "hidden md:flex" : "flex"} 
-          flex-col w-full md:w-95 lg:w-105 border-r border-white/5 bg-transparent h-full z-10
+          flex-col w-full md:w-95 lg:w-105 border-r border-gray-200 bg-white h-full z-10
         `}
         >
           {/* Sidebar Header */}
           <header
-            className={`p-4 md:px-6 md:py-5 flex items-center justify-between bg-black/40 backdrop-blur-3xl sticky top-0 z-50 border-b border-white/5 transition-all ${activeTab === "profile" ? "justify-center border-b-transparent shadow-[0_10px_30px_rgba(0,0,0,0.5)]" : ""}`}
+            className={`p-4 md:px-6 md:py-5 flex items-center justify-between bg-white sticky top-0 z-50 border-b border-gray-200 transition-all ${activeTab === "profile" ? "justify-center border-b-transparent shadow-sm" : ""}`}
           >
             {activeTab === "profile" ? (
               <motion.h1
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
-                className="text-[11px] font-bold tracking-[0.25em] uppercase text-primary/80"
+                className="text-[11px] font-bold tracking-[0.25em] uppercase text-primary"
               >
                 {t("Your Profile")}
               </motion.h1>
@@ -595,8 +595,8 @@ export function Main() {
               <>
                 <div className="flex flex-col">
                   <div className="flex items-center gap-2">
-                    <Logo className="w-8 h-8 md:w-9 md:h-9 drop-shadow-[0_0_15px_rgba(255,255,255,0.2)]" />
-                    <h1 className="text-xl md:text-[22px] font-bold tracking-tight text-white/90 drop-shadow-sm">
+                    <Logo className="w-8 h-8 md:w-9 md:h-9" />
+                    <h1 className="text-xl md:text-[22px] font-bold tracking-tight text-gray-900 drop-shadow-sm">
                       LinkUpply
                     </h1>
                   </div>
@@ -610,11 +610,11 @@ export function Main() {
                   <motion.button
                     whileTap={{ scale: 0.9 }}
                     onClick={() => setActiveTab("requests")}
-                    className={`p-2.5 rounded-[1.25rem] transition-all relative ${activeTab === "requests" ? "bg-primary/10 text-primary border border-primary/20 backdrop-blur-md" : "text-white/50 border border-transparent hover:text-white hover:bg-white/5"}`}
+                    className={`p-2.5 rounded-[1.25rem] transition-all relative ${activeTab === "requests" ? "bg-primary/10 text-primary border border-primary/20 backdrop-blur-md" : "text-gray-400 border border-transparent hover:text-gray-900 hover:bg-gray-100"}`}
                   >
                     <Bell size={20} strokeWidth={1.5} />
                     {requests.length > 0 && (
-                      <span className="absolute -top-1 -right-1 bg-linear-to-br from-red-500 to-pink-500 text-white text-[9px] font-bold rounded-full w-4 h-4 flex items-center justify-center border-2 border-black shadow-[0_0_10px_rgba(239,68,68,0.5)]">
+                      <span className="absolute -top-1 -right-1 bg-linear-to-br from-red-500 to-pink-500 text-gray-900 text-[9px] font-bold rounded-full w-4 h-4 flex items-center justify-center border-2 border-gray-200 shadow-[0_0_10px_rgba(239,68,68,0.5)]">
                         {requests.length}
                       </span>
                     )}
@@ -622,7 +622,7 @@ export function Main() {
                   <motion.button
                     whileTap={{ scale: 0.9 }}
                     onClick={() => setActiveTab("settings")}
-                    className={`p-2.5 rounded-[1.25rem] transition-all relative ${activeTab === "settings" ? "bg-primary/10 text-primary border border-primary/20 backdrop-blur-md" : "text-white/50 border border-transparent hover:text-white hover:bg-white/5"}`}
+                    className={`p-2.5 rounded-[1.25rem] transition-all relative ${activeTab === "settings" ? "bg-primary/10 text-primary border border-primary/20 backdrop-blur-md" : "text-gray-400 border border-transparent hover:text-gray-900 hover:bg-gray-100"}`}
                   >
                     <SettingsIcon size={20} strokeWidth={1.5} />
                   </motion.button>
@@ -634,25 +634,25 @@ export function Main() {
 
           {/* Search Bar */}
           {activeTab === "home" && (
-            <div className="p-4 md:px-6 md:py-4">
-              <div className="relative group z-10">
+            <div className="p-4 md:px-6 md:py-4 bg-[#f8fafc]">
+              <div className="relative group z-10 w-full mb-2">
                 <Search
                   size={18}
-                  className="absolute left-5 top-1/2 -translate-y-1/2 text-white/30 group-focus-within:text-primary transition-colors stroke-2"
+                  className="absolute left-5 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-primary transition-colors stroke-2"
                 />
                 <input
                   type="text"
                   placeholder={t("Search conversations...")}
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-full bg-white/3 border border-white/10 rounded-full py-3.5 pl-12 pr-5 text-sm font-light text-white outline-none focus:border-primary/40 focus:bg-white/5 transition-all placeholder:text-white/20 backdrop-blur-xl hover:bg-white/5"
+                  className="w-full bg-gray-100 border border-transparent rounded-full py-3.5 pl-12 pr-5 text-sm font-medium text-gray-900 outline-none focus:border-primary/40 focus:bg-white focus:shadow-sm transition-all placeholder:text-gray-400 hover:bg-white hover:border-gray-200"
                 />
               </div>
             </div>
           )}
 
           {/* Chat List Area */}
-          <div className="flex-1 overflow-y-auto custom-scrollbar overscroll-none pb-24 md:pb-4">
+          <div className={`flex-1 overflow-y-auto custom-scrollbar overscroll-none bg-[#f8fafc] ${activeTab === "settings" ? "pb-0" : "pb-24 md:pb-4"}`}>
             <AnimatePresence mode="wait">
               {activeTab === "home" && (
                 <motion.div
@@ -665,10 +665,10 @@ export function Main() {
                 >
                   {filteredContacts.length === 0 ? (
                     <div className="flex flex-col items-center justify-center py-20 text-center px-4">
-                      <div className="w-16 h-16 bg-white/2 border border-white/5 rounded-3xl flex items-center justify-center text-white/20 mb-6 drop-shadow-xl backdrop-blur-md">
+                      <div className="w-16 h-16 bg-white border border-gray-100 rounded-3xl flex items-center justify-center text-gray-400 mb-6 drop-shadow-sm">
                         <MessageSquare size={32} strokeWidth={1.5} />
                       </div>
-                      <p className="text-white/40 text-sm font-medium tracking-wide">
+                      <p className="text-gray-500 text-sm font-medium tracking-wide">
                         {t("No chats yet")}
                       </p>
                     </div>
@@ -679,7 +679,7 @@ export function Main() {
                         className="relative group/swipe touch-pan-y"
                       >
                         {/* Swipe Action Background Mock */}
-                        <div className="absolute inset-0 bg-red-500/20 rounded-3xl flex flex-row-reverse items-center px-6 text-red-500 opacity-0 transition-opacity">
+                        <div className="absolute inset-0 bg-red-100 rounded-3xl flex flex-row-reverse items-center px-6 text-red-500 opacity-0 transition-opacity">
                           <Trash size={20} />
                         </div>
 
@@ -688,10 +688,10 @@ export function Main() {
                           dragConstraints={{ left: 0, right: 0 }} // Disabled real drag for simplicity, relying on hover/tap
                           whileTap={{ scale: 0.98 }}
                           onClick={() => setActiveChat(contact)}
-                          className={`flex items-center gap-4 p-4 rounded-3xl cursor-pointer transition-all border relative overflow-hidden backdrop-blur-md glass-morphism ${
+                          className={`flex items-center gap-4 p-4 rounded-3xl cursor-pointer transition-all border relative overflow-hidden ${
                             activeChat?.id === contact.id
-                              ? "border-primary/20 bg-primary/5 shadow-[0_4px_20px_rgba(34,211,238,0.1)]"
-                              : "border-white/4 bg-white/2 hover:bg-white/4 hover:border-white/8"
+                              ? "border-primary/20 bg-primary/5 shadow-sm"
+                              : "border-gray-50 bg-white hover:bg-gray-50 hover:border-gray-100"
                           }`}
                         >
                           <div 
@@ -703,34 +703,34 @@ export function Main() {
                                 contact.photoURL || emojiToSVG(contact.emoji)
                               }
                               alt={contact.name}
-                              className={`w-14 h-14 rounded-full object-cover ${contact.isOfficial ? "border-2 border-primary shadow-[0_0_15px_rgba(34,211,238,0.5)]" : "border border-white/10 shadow-lg"}`}
+                              className={`w-14 h-14 rounded-full object-cover ${contact.isOfficial ? "border-2 border-primary shadow-sm" : "border border-gray-100 shadow-sm"}`}
                             />
                             {isUserOnline(contact) && (
-                              <div className="absolute bottom-0.5 right-0.5 w-3.5 h-3.5 bg-green-500 rounded-full border-[2.5px] border-black shadow-[0_0_10px_rgba(34,197,94,0.6)]"></div>
+                              <div className="absolute bottom-0.5 right-0.5 w-3.5 h-3.5 bg-green-500 rounded-full border-[2.5px] border-gray-200 shadow-sm"></div>
                             )}
                           </div>
                           <div className="flex-1 min-w-0">
                             <div className="flex justify-between items-baseline">
-                              <h3 className="font-semibold text-white truncate flex items-center gap-1.5 text-[15px] tracking-tight">
+                              <h3 className="font-semibold text-gray-900 truncate flex items-center gap-1.5 text-[15px] tracking-tight">
                                 {contact.name}
                                 {contact.isOfficial && (
-                                  <div className="bg-blue-500 p-0.5 rounded-full shrink-0 shadow-[0_0_8px_rgba(59,130,246,0.5)]">
+                                  <div className="bg-blue-500 p-0.5 rounded-full shrink-0 shadow-[0_0_8px_rgba(59,130,246,0.2)]">
                                     <Check
                                       size={8}
-                                      className="text-white"
+                                      className="text-gray-900"
                                       strokeWidth={5}
                                     />
                                   </div>
                                 )}
                               </h3>
                               <span
-                                className={`text-[10px] font-medium ${chatsState[contact.id === "linkup_official" ? "official_broadcast" : [user?.uid, contact.id].sort().join("_")]?.unread?.[user?.uid || ""] > 0 ? "text-primary" : "text-white/40"}`}
+                                className={`text-[10px] font-medium ${chatsState[contact.id === "linkup_official" ? "official_broadcast" : [user?.uid, contact.id].sort().join("_")]?.unread?.[user?.uid || ""] > 0 ? "text-primary" : "text-gray-400"}`}
                               >
                                 12:45 PM
                               </span>
                             </div>
                             <div className="flex items-center justify-between mt-1">
-                              <p className="font-inter text-[13px] text-white/50 truncate flex-1 font-light tracking-wide">
+                              <p className="font-inter text-[13px] text-gray-500 truncate flex-1 font-light tracking-wide">
                                 {contact.bio || "Hey there! Let's hook up."}
                               </p>
                               <div className="flex items-center gap-2 pl-3">
@@ -747,7 +747,7 @@ export function Main() {
                                     ] || 0;
                                   return unreadCount > 0 ? (
                                     <div className="min-w-5 h-5 px-1.5 rounded-full bg-linear-to-tr from-secondary to-primary flex items-center justify-center shadow-[0_0_12px_rgba(34,211,238,0.4)]">
-                                      <span className="text-[10px] font-bold text-[#0f172a]">
+                                      <span className="text-[10px] font-bold text-white">
                                         {unreadCount}
                                       </span>
                                     </div>
@@ -759,7 +759,7 @@ export function Main() {
                                     e.stopPropagation();
                                     togglePin(contact.id);
                                   }}
-                                  className="opacity-0 group-hover/swipe:opacity-100 transition-opacity p-1 text-white/30 hover:text-primary scale-90"
+                                  className="opacity-0 group-hover/swipe:opacity-100 transition-opacity p-1 text-gray-400 hover:text-primary scale-90"
                                 >
                                   <Sparkles size={16} />
                                 </button>
@@ -804,7 +804,7 @@ export function Main() {
                   dir={lang === 'ur' ? 'rtl' : 'ltr'}
                 >
                   <div className="px-5 mb-4 flex justify-between items-center">
-                    <h2 className="text-[11px] font-bold text-white/50 uppercase tracking-[0.2em]">
+                    <h2 className="text-[11px] font-bold text-gray-500 uppercase tracking-[0.2em]">
                       {t("Recent Calls")}
                     </h2>
                   </div>
@@ -812,15 +812,15 @@ export function Main() {
                   <div className="flex-1 overflow-y-auto px-3 space-y-2 pb-24">
                     {callHistory.length === 0 ? (
                       <div className="flex flex-col items-center justify-center py-20 opacity-60">
-                        <div className="w-24 h-24 mb-6 rounded-4xl bg-black/40 border border-white/10 shadow-2xl flex items-center justify-center relative overflow-hidden backdrop-blur-3xl">
+                        <div className="w-24 h-24 mb-6 rounded-4xl bg-white/80 border border-gray-200 shadow-2xl flex items-center justify-center relative overflow-hidden backdrop-blur-3xl">
                           <div className="absolute inset-0 bg-primary/10 blur-xl"></div>
                           <Phone
                             size={40}
-                            className="text-white/50 relative z-10"
+                            className="text-gray-500 relative z-10"
                             strokeWidth={1}
                           />
                         </div>
-                        <p className="text-sm text-white/40 font-medium">
+                        <p className="text-sm text-gray-400 font-medium">
                           {t("No recent calls")}
                         </p>
                       </div>
@@ -839,30 +839,30 @@ export function Main() {
                         return (
                           <div
                             key={call.id}
-                            className="flex items-center gap-4 p-4 rounded-3xl bg-white/2 border border-white/5 backdrop-blur-md"
+                            className="flex items-center gap-4 p-4 rounded-3xl bg-gray-50 border border-gray-100 backdrop-blur-md"
                           >
                             <div
-                              className={`w-12 h-12 rounded-full border flex items-center justify-center ${isMissed ? "border-red-500/20 bg-red-500/5" : "border-white/10 bg-white/5"}`}
+                              className={`w-12 h-12 rounded-full border flex items-center justify-center ${isMissed ? "border-red-500/20 bg-red-500/5" : "border-gray-200 bg-gray-50"}`}
                             >
                               <Phone
                                 className={
                                   isMissed
                                     ? "text-red-500 drop-shadow-[0_0_8px_rgba(239,68,68,0.6)]"
-                                    : "text-white/70"
+                                    : "text-gray-600"
                                 }
                                 size={20}
                                 strokeWidth={2}
                               />
                             </div>
                             <div className="flex-1">
-                              <h4 className="text-white font-semibold flex items-center gap-2">
+                              <h4 className="text-gray-900 font-semibold flex items-center gap-2">
                                 {otherUser.name}
                               </h4>
                               <p
                                 className={
                                   isMissed
                                     ? "text-red-400 text-xs font-medium flex items-center gap-1 mt-0.5"
-                                    : "text-white/40 text-xs font-medium flex items-center gap-1 mt-0.5"
+                                    : "text-gray-400 text-xs font-medium flex items-center gap-1 mt-0.5"
                                 }
                               >
                                 {isMissed && (
@@ -875,7 +875,7 @@ export function Main() {
                                     : t("Outgoing Call")}
                               </p>
                             </div>
-                            <span className="text-white/30 text-[10px] font-medium">
+                            <span className="text-gray-400 text-[10px] font-medium">
                               {call.timestamp
                                 ? new Date(
                                     call.timestamp.toMillis(),
@@ -894,7 +894,7 @@ export function Main() {
                   <motion.button
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
-                    className="absolute bottom-24 right-6 w-14 h-14 bg-linear-to-tr from-secondary to-primary rounded-full shadow-[0_8px_32px_rgba(34,211,238,0.4)] flex items-center justify-center z-20 text-black border border-white/20"
+                    className="absolute bottom-24 right-6 w-14 h-14 bg-linear-to-tr from-secondary to-primary rounded-full shadow-[0_8px_32px_rgba(34,211,238,0.4)] flex items-center justify-center z-20 text-black border border-gray-200"
                   >
                     <Phone size={24} fill="currentColor" strokeWidth={0} />
                   </motion.button>
@@ -918,20 +918,20 @@ export function Main() {
               onForward={(msg) => setForwardingMsg(msg)}
             />
           ) : (
-            <div className="flex-1 flex flex-col items-center justify-center p-8 text-center">
+            <div className="flex-1 flex flex-col items-center justify-center p-8 text-center bg-[#f8fafc]">
               <motion.div
                 initial={{ scale: 0.9, opacity: 0 }}
                 animate={{ scale: 1, opacity: 1 }}
                 className="max-w-md space-y-8"
               >
-                <div className="w-32 h-32 bg-white/5 rounded-[3rem] flex items-center justify-center mx-auto shadow-2xl border border-white/10">
+                <div className="w-32 h-32 bg-white rounded-[3rem] flex items-center justify-center mx-auto shadow-xl border border-gray-100">
                   <Logo className="w-20 h-20" />
                 </div>
                 <div>
-                  <h2 className="text-4xl font-bold text-white mb-4 tracking-tight">
+                  <h2 className="text-4xl font-bold text-gray-900 mb-4 tracking-tight">
                     Welcome to LinkUpply
                   </h2>
-                  <p className="text-white/50 leading-relaxed text-lg font-medium">
+                  <p className="text-gray-500 leading-relaxed text-lg font-medium">
                     Select a contact to start chatting. Your messages are
                     end-to-end encrypted and synced across all your devices.
                   </p>
@@ -946,12 +946,12 @@ export function Main() {
       </div>
 
       {/* Mobile Bottom Nav */}
-      <div className="md:hidden fixed bottom-0 left-0 w-full h-18 bg-[#0a0f1c]/95 backdrop-blur-xl border-t border-white/10 z-100 px-2 pb-safe flex items-center justify-around shadow-[0_-8px_30px_rgba(0,0,0,0.6)]">
+      <div className="md:hidden fixed bottom-0 left-0 w-full h-18 bg-white border-t border-gray-200 z-100 px-2 pb-safe flex items-center justify-around shadow-sm">
         {navItems.map((tab) => (
           <button
             key={tab.id}
             onClick={() => setActiveTab(tab.id as any)}
-            className={`flex flex-col items-center justify-center gap-1 transition-all relative w-16 h-14 group ${activeTab === tab.id ? "text-primary" : "text-white/50 hover:text-white"}`}
+            className={`flex flex-col items-center justify-center gap-1 transition-all relative w-16 h-14 group ${activeTab === tab.id ? "text-primary" : "text-gray-400 hover:text-gray-900"}`}
           >
             <motion.div
               className="relative z-10"
@@ -970,7 +970,7 @@ export function Main() {
                 })
               )}
               {tab.id === "home" && totalUnread > 0 && (
-                <span className="absolute -top-1 -right-1 bg-linear-to-br from-red-500 to-pink-500 text-white text-[9px] font-bold rounded-full min-w-4 h-4 px-1 flex items-center justify-center border-2 border-black shadow-[0_0_10px_rgba(239,68,68,0.5)]">
+                <span className="absolute -top-1 -right-1 bg-linear-to-br from-red-500 to-pink-500 text-gray-900 text-[9px] font-bold rounded-full min-w-4 h-4 px-1 flex items-center justify-center border-2 border-gray-200 shadow-[0_0_10px_rgba(239,68,68,0.5)]">
                   {totalUnread > 99 ? "99+" : totalUnread}
                 </span>
               )}
@@ -1155,7 +1155,7 @@ function RequestsView({
   return (
     <div className="flex flex-col gap-10 p-2" dir={lang === 'ur' ? 'rtl' : 'ltr'}>
       <div className="space-y-4">
-        <h2 className="text-[11px] font-bold text-white/50 uppercase tracking-[0.2em] px-2 flex items-center justify-between">
+        <h2 className="text-[11px] font-bold text-gray-500 uppercase tracking-[0.2em] px-2 flex items-center justify-between">
           <span>{t("Add New Link")}</span>
           <div className="w-1.5 h-1.5 rounded-full bg-primary/50"></div>
         </h2>
@@ -1163,7 +1163,7 @@ function RequestsView({
           <div className="relative flex-1 group">
             <Search
               size={18}
-              className="absolute left-5 top-1/2 -translate-y-1/2 text-white/30 group-focus-within:text-primary transition-colors stroke-2"
+              className="absolute left-5 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-primary transition-colors stroke-2"
             />
             <input
               type="text"
@@ -1175,7 +1175,7 @@ function RequestsView({
               spellCheck="false"
               dir="ltr"
               style={{ direction: "ltr", textAlign: "left" }}
-              className="w-full bg-white/3 border border-white/10 rounded-full py-4 pl-12 pr-5 text-white focus:border-primary/40 focus:bg-white/5 outline-none transition-all placeholder:text-white/20 text-sm font-light backdrop-blur-xl hover:bg-white/5"
+              className="w-full bg-gray-50 border border-gray-200 rounded-full py-4 pl-12 pr-5 text-gray-900 focus:border-primary/40 focus:bg-gray-50 outline-none transition-all placeholder:text-gray-400 text-sm font-light backdrop-blur-xl hover:bg-gray-50"
             />
           </div>
           <motion.button
@@ -1184,7 +1184,7 @@ function RequestsView({
             transition={{ type: "spring", stiffness: 400, damping: 15 }}
             type="submit"
             disabled={loading}
-            className="bg-linear-to-tr from-secondary to-primary text-white font-bold px-7 rounded-full shadow-[0_0_24px_rgba(34,211,238,0.25)] hover:shadow-[0_0_30px_rgba(34,211,238,0.4)] disabled:opacity-50 text-sm flex items-center justify-center transition-shadow"
+            className="bg-linear-to-tr from-secondary to-primary text-gray-900 font-bold px-7 rounded-full shadow-[0_0_24px_rgba(34,211,238,0.25)] hover:shadow-[0_0_30px_rgba(34,211,238,0.4)] disabled:opacity-50 text-sm flex items-center justify-center transition-shadow"
           >
             {loading ? "..." : t("Find")}
           </motion.button>
@@ -1196,19 +1196,19 @@ function RequestsView({
           <motion.div
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
-            className="p-5 glass-morphism rounded-4xl flex items-center justify-between border border-white/8 bg-white/2"
+            className="p-5 glass-morphism rounded-4xl flex items-center justify-between border border-gray-200/8 bg-gray-50"
           >
             <div className="flex items-center gap-4">
               <div className="relative">
                 <img
                   src={searchResult.photoURL || emojiToSVG(searchResult.emoji)}
                   alt="User"
-                  className="w-12 h-12 rounded-full shadow-lg border border-white/10 object-cover"
+                  className="w-12 h-12 rounded-full shadow-lg border border-gray-200 object-cover"
                 />
                 <div className="absolute inset-0 rounded-full shadow-[inset_0_0_10px_rgba(255,255,255,0.1)] pointer-events-none"></div>
               </div>
               <div>
-                <h3 className="font-semibold text-white text-base tracking-tight">
+                <h3 className="font-semibold text-gray-900 text-base tracking-tight">
                   {searchResult.name}
                 </h3>
                 <p className="text-[10px] text-primary/80 font-bold uppercase tracking-widest mt-0.5">
@@ -1217,7 +1217,7 @@ function RequestsView({
               </div>
             </div>
             {isAlreadyFriend ? (
-              <div className="flex items-center gap-1.5 text-white/50 font-medium text-xs bg-white/5 px-3 py-1.5 rounded-full border border-white/10">
+              <div className="flex items-center gap-1.5 text-gray-500 font-medium text-xs bg-gray-50 px-3 py-1.5 rounded-full border border-gray-200">
                 <Check size={14} strokeWidth={2.5} />
                 <span>{t("Linked")}</span>
               </div>
@@ -1225,7 +1225,7 @@ function RequestsView({
               <motion.div
                 initial={{ scale: 0, rotate: -180 }}
                 animate={{ scale: 1, rotate: 0 }}
-                className="flex items-center gap-1.5 bg-linear-to-r from-emerald-500 to-green-400 text-white px-4 py-2 rounded-full shadow-lg"
+                className="flex items-center gap-1.5 bg-linear-to-r from-emerald-500 to-green-400 text-gray-900 px-4 py-2 rounded-full shadow-lg"
               >
                 <Check size={16} strokeWidth={3} />
                 <span className="text-[10px] font-bold uppercase tracking-widest">
@@ -1238,7 +1238,7 @@ function RequestsView({
                 whileTap={{ scale: 0.95 }}
                 disabled={loading}
                 onClick={sendRequest}
-                className="bg-white/10 text-white px-5 py-2 rounded-full font-semibold text-xs shadow-md border border-white/10 disabled:opacity-50 hover:bg-white/20 transition-all hover:border-white/20"
+                className="bg-gray-100 text-gray-900 px-5 py-2 rounded-full font-semibold text-xs shadow-md border border-gray-200 disabled:opacity-50 hover:bg-gray-500 transition-all hover:border-gray-200"
               >
                 {loading ? "..." : t("Connect")}
               </motion.button>
@@ -1248,7 +1248,7 @@ function RequestsView({
       </div>
 
       <div className="space-y-4 pt-4">
-        <h2 className="text-[11px] font-bold text-white/50 uppercase tracking-[0.2em] px-2 flex items-center justify-between">
+        <h2 className="text-[11px] font-bold text-gray-500 uppercase tracking-[0.2em] px-2 flex items-center justify-between">
           <span>{t("Pending Links")}</span>
           {requests.length > 0 && (
             <span className="bg-primary/20 text-primary text-[9px] px-2 py-0.5 rounded-full">
@@ -1260,15 +1260,15 @@ function RequestsView({
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            className="flex flex-col items-center justify-center p-12 py-20 rounded-[2.5rem] border border-dashed border-white/10 bg-white/2 relative overflow-hidden"
+            className="flex flex-col items-center justify-center p-12 py-20 rounded-[2.5rem] border border-dashed border-gray-200 bg-gray-50 relative overflow-hidden"
           >
             <motion.div
               animate={{ scale: [1, 1.05, 1], opacity: [0.3, 0.6, 0.3] }}
               transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
               className="absolute w-32 h-32 bg-primary/20 rounded-full blur-3xl pointer-events-none"
             />
-            <UserPlus className="text-white/20 mb-4 stroke-1" size={40} />
-            <p className="text-white/40 text-sm font-medium tracking-wide">
+            <UserPlus className="text-gray-400 mb-4 stroke-1" size={40} />
+            <p className="text-gray-400 text-sm font-medium tracking-wide">
               {t("No pending links at the moment")}
             </p>
           </motion.div>
@@ -1279,16 +1279,16 @@ function RequestsView({
                 key={req.id}
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                className="p-4 glass-morphism rounded-4xl flex items-center justify-between border border-white/8 bg-white/3"
+                className="p-4 glass-morphism rounded-4xl flex items-center justify-between border border-gray-200/8 bg-gray-50"
               >
                 <div className="flex items-center gap-3">
                   <img
                     src={req.photoURL || emojiToSVG(req.emoji || "😀")}
                     alt="User"
-                    className="w-12 h-12 rounded-full shadow-lg border border-white/10 object-cover"
+                    className="w-12 h-12 rounded-full shadow-lg border border-gray-200 object-cover"
                   />
                   <div>
-                    <h3 className="font-semibold text-white text-base tracking-tight">
+                    <h3 className="font-semibold text-gray-900 text-base tracking-tight">
                       {req.name || "LinkUpply User"}
                     </h3>
                     <p className="text-[10px] text-primary/80 font-medium tracking-wide mt-0.5">
@@ -1300,14 +1300,14 @@ function RequestsView({
                   <motion.button
                     whileTap={{ scale: 0.9 }}
                     onClick={() => handleRequest(req, true)}
-                    className="bg-white text-[#0f172a] px-4 py-2 rounded-full font-bold text-xs shadow-md border border-transparent hover:bg-white/90 transition-colors"
+                    className="bg-primary text-white px-4 py-2 rounded-full font-bold text-xs shadow-md border border-transparent hover:bg-primary/90 transition-colors"
                   >
                     {t("Accept")}
                   </motion.button>
                   <motion.button
                     whileTap={{ scale: 0.9 }}
                     onClick={() => handleRequest(req, false)}
-                    className="bg-transparent border border-white/10 text-white/50 px-4 py-2 rounded-full font-bold text-xs hover:text-white hover:bg-white/5 transition-colors"
+                    className="bg-transparent border border-gray-200 text-gray-500 px-4 py-2 rounded-full font-bold text-xs hover:text-gray-900 hover:bg-gray-50 transition-colors"
                   >
                     {t("Ignore")}
                   </motion.button>
@@ -1339,13 +1339,13 @@ function RequestsView({
                       <motion.div
                         initial={{ scale: 0 }}
                         animate={{ scale: 1 }}
-                        className="absolute -top-1 -right-1 bg-green-500 text-white p-0.5 rounded-full shadow-lg"
+                        className="absolute -top-1 -right-1 bg-green-500 text-gray-900 p-0.5 rounded-full shadow-lg"
                       >
                         <Check size={10} strokeWidth={4} />
                       </motion.div>
                     </div>
                     <div>
-                      <h3 className="font-bold text-white text-base md:text-lg tracking-tight">
+                      <h3 className="font-bold text-gray-900 text-base md:text-lg tracking-tight">
                         {requester.name || "LinkUpply User"}
                       </h3>
                       <div className="flex items-center gap-1.5 text-green-400 font-bold text-[9px] md:text-[10px] uppercase tracking-widest">
@@ -1357,7 +1357,7 @@ function RequestsView({
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
                     onClick={() => onOpenChat(requester)}
-                    className="bg-primary text-[#0f172a] px-5 py-2.5 rounded-xl font-bold text-xs shadow-lg shadow-primary/20 flex items-center gap-2"
+                    className="bg-primary text-white px-5 py-2.5 rounded-xl font-bold text-xs shadow-lg shadow-primary/20 flex items-center gap-2"
                   >
                     <MessageSquare size={14} />
                     {t("Chat Now")}
