@@ -50,23 +50,21 @@ export function InstallPrompt() {
 
   useEffect(() => {
     // Auto show prompt if we successfully grabbed the native prompt event,
-    // after a short delay, but only if they haven't dismissed it
+    // after a short delay (Testing blocker fixed here)
     if (deferredPrompt && !isInstalled) {
-      const hasDismissed = localStorage.getItem('installPromptDismissed');
-      if (!hasDismissed) {
-        const timer = setTimeout(() => setShowPrompt(true), 3000);
-        return () => clearTimeout(timer);
-      }
+      const timer = setTimeout(() => setShowPrompt(true), 3000);
+      return () => clearTimeout(timer);
     }
   }, [deferredPrompt, isInstalled]);
 
   const handleInstallClick = async () => {
-    if (deferredPrompt) {
-      deferredPrompt.prompt();
-      const { outcome } = await deferredPrompt.userChoice;
+    const promptEvent = deferredPrompt || (window as any).deferredPrompt;
+    
+    if (promptEvent) {
+      promptEvent.prompt();
+      const { outcome } = await promptEvent.userChoice;
       if (outcome === 'accepted') {
         setShowPrompt(false);
-        localStorage.setItem('installPromptDismissed', 'true'); // don't show custom prompt again if installed
       }
       setDeferredPrompt(null);
       (window as any).deferredPrompt = null;
@@ -74,9 +72,9 @@ export function InstallPrompt() {
       // Provide instruction for manual install as fallback
       const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !(window as any).MSStream;
       if (isIOS) {
-         alert("To install on iOS: tap the Share button at the bottom of the browser, then select 'Add to Home Screen'.");
+        alert("To install on iOS: tap the Share button at the bottom of the browser, then select 'Add to Home Screen'.");
       } else {
-         alert("Installation is preparing. Please wait a few seconds and try again, or tap the browser menu and select 'Install app'.");
+        alert("Android Chrome package handles the reinstall cooldown. If this doesn't pop up the original app prompt, please tap the browser menu (3 dots) and select 'Install app'.");
       }
       setShowPrompt(false);
     }
@@ -84,30 +82,29 @@ export function InstallPrompt() {
 
   const handleClose = () => {
     setShowPrompt(false);
-    localStorage.setItem('installPromptDismissed', 'true');
   };
 
   if (!showPrompt) return null;
 
   return (
     <AnimatePresence>
-      <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4">
+      <div className="fixed inset-0 z-9999 flex items-center justify-center p-4">
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          className="absolute inset-0 bg-black/80 backdrop-blur-md"
+          className="absolute inset-0 bg-white/80 backdrop-blur-md"
           onClick={handleClose}
         />
         <motion.div
           initial={{ scale: 0.9, opacity: 0, y: 20 }}
           animate={{ scale: 1, opacity: 1, y: 0 }}
           exit={{ scale: 0.9, opacity: 0, y: 20 }}
-          className="relative w-full max-w-sm glass-morphism rounded-[2.5rem] border border-white/10 shadow-[0_0_50px_rgba(30,136,229,0.3)] overflow-hidden p-8 flex flex-col items-center bg-[#0f172a]"
+          className="relative w-full max-w-sm glass-morphism rounded-[2.5rem] border border-gray-200 shadow-[0_0_50px_rgba(30,136,229,0.3)] overflow-hidden p-8 flex flex-col items-center bg-white"
         >
           <button 
             onClick={handleClose}
-            className="absolute top-4 right-4 p-2 bg-white/5 hover:bg-white/10 rounded-full text-white/50 hover:text-white transition-colors"
+            className="absolute top-4 right-4 p-2 bg-gray-50 hover:bg-gray-100 rounded-full text-gray-500 hover:text-gray-900 transition-colors"
           >
             <X size={20} />
           </button>
@@ -117,10 +114,10 @@ export function InstallPrompt() {
             <Logo className="w-full h-full relative z-10 drop-shadow-2xl" />
           </div>
 
-          <h2 className="text-2xl font-bold text-white mb-2 tracking-tight text-center">
+          <h2 className="text-2xl font-bold text-gray-900 mb-2 tracking-tight text-center">
             Install LinkUpply
           </h2>
-          <p className="text-white/60 text-[15px] text-center mb-8 font-medium">
+          <p className="text-gray-500 text-[15px] text-center mb-8 font-medium">
             Get the full app experience on your device. Fast, seamless, and always connected.
           </p>
 
@@ -128,13 +125,13 @@ export function InstallPrompt() {
             onClick={handleInstallClick}
             className="w-full relative group mb-6"
           >
-            <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-primary via-secondary to-primary blur-lg opacity-60 group-hover:opacity-100 transition duration-500" />
-            <div className="relative w-full bg-primary text-black font-bold text-lg py-4 rounded-2xl flex items-center justify-center transition-transform group-active:scale-95 shadow-xl">
+            <div className="absolute inset-0 rounded-2xl bg-linear-to-r from-primary via-secondary to-primary blur-lg opacity-60 group-hover:opacity-100 transition duration-500" />
+            <div className="relative w-full bg-primary text-white font-bold text-lg py-4 rounded-2xl flex items-center justify-center transition-transform group-active:scale-95 shadow-xl">
               Install Now
             </div>
           </button>
 
-          <div className="flex flex-col items-center gap-4 text-white/50 w-full mt-2">
+          <div className="flex flex-col items-center gap-4 text-gray-500 w-full mt-2">
             <div className="text-[11px] font-bold uppercase tracking-[0.2em] flex flex-col items-center gap-3 w-full">
               <span>Install on</span>
               <div className="flex items-center justify-center gap-8 w-full px-4">
