@@ -108,14 +108,14 @@ export function StatusViewer({
       animate={{ opacity: 1, scale: 1 }}
       exit={{ opacity: 0, scale: 0.95 }}
       transition={{ duration: 0.2, ease: "easeOut" }}
-      className="fixed inset-0 z-200 bg-black flex flex-col items-center justify-center safe-top safe-bottom"
+      className="fixed inset-0 z-200 bg-white flex flex-col items-center justify-center safe-top safe-bottom"
     >
       {/* Progress Bars */}
       <div className="absolute top-4 left-4 right-4 flex gap-1 z-50">
         {statuses.map((_: any, idx: number) => (
           <div
             key={idx}
-            className="flex-1 h-1 bg-white/30 rounded-full overflow-hidden backdrop-blur-sm"
+            className="flex-1 h-1 bg-gray-500 rounded-full overflow-hidden backdrop-blur-sm"
           >
             <motion.div
               initial={{ width: idx < currentIndex ? "100%" : "0%" }}
@@ -151,32 +151,32 @@ export function StatusViewer({
         <div className="flex items-center gap-3 pl-4">
           <button
             onClick={onClose}
-            className="text-white hover:bg-white/10 p-2 rounded-full transition-colors"
+            className="text-gray-900 hover:bg-gray-100 p-2 rounded-full transition-colors"
           >
             <ArrowLeft size={24} />
           </button>
           <img
             src={group.user.photo}
             alt=""
-            className="w-10 h-10 rounded-full object-cover border border-white/20"
+            className="w-10 h-10 rounded-full object-cover border border-gray-200"
           />
           <div className="flex flex-col">
-            <span className="text-white font-medium text-[15px]">
+            <span className="text-gray-900 font-medium text-[15px]">
               {group.user.name}
             </span>
-            <span className="text-white/70 text-[12px]">
+            <span className="text-gray-600 text-[12px]">
               {formatTime(currentStatus.timestamp)}
             </span>
           </div>
         </div>
-        <button className="text-white mr-4 p-2 hover:bg-white/10 rounded-full transition-colors">
+        <button className="text-gray-900 mr-4 p-2 hover:bg-gray-100 rounded-full transition-colors">
           <MoreVertical size={24} />
         </button>
       </div>
 
       {/* Media Viewer */}
       <div
-        className="w-full h-full max-w-2xl relative flex items-center justify-center overflow-hidden bg-black/90"
+        className="w-full h-full max-w-2xl relative flex items-center justify-center overflow-hidden bg-white/90"
         onMouseDown={() => !showViewers && setIsPaused(true)}
         onMouseUp={() => !showViewers && setIsPaused(false)}
         onTouchStart={() => !showViewers && setIsPaused(true)}
@@ -196,7 +196,7 @@ export function StatusViewer({
             if(!showViewers) handleNext();
           }}
         >
-          <button className="z-50 p-2 bg-black/40 hover:bg-black/60 rounded-full backdrop-blur-md text-white transition-colors border border-white/10 pointer-events-none">
+          <button className="z-50 p-2 bg-white/80 hover:bg-white/60 rounded-full backdrop-blur-md text-gray-900 transition-colors border border-gray-200 pointer-events-none">
              <ChevronRight size={28} />
           </button>
         </div>
@@ -224,7 +224,7 @@ export function StatusViewer({
           <div className="w-full flex flex-col items-center justify-center">
              <button 
                 onClick={() => setShowViewers(true)}
-                className="flex items-center gap-2 text-white/90 bg-black/40 hover:bg-black/60 px-6 py-2.5 rounded-full backdrop-blur-md transition-all font-medium border border-white/10"
+                className="flex items-center gap-2 text-gray-800 bg-white/80 hover:bg-white/60 px-6 py-2.5 rounded-full backdrop-blur-md transition-all font-medium border border-gray-200"
              >
                <Eye size={18} />
                <span>{currentStatus.viewers?.length || 0} views</span>
@@ -240,7 +240,7 @@ export function StatusViewer({
                 onFocus={() => setIsPaused(true)}
                 onBlur={() => setIsPaused(false)}
                 placeholder="Reply..."
-                className="w-full bg-white/10 hover:bg-white/15 focus:bg-white/20 text-white placeholder:text-white/50 rounded-full py-3.5 pl-6 pr-12 outline-none border border-white/10 focus:border-white/30 backdrop-blur-md transition-all text-[15px]"
+                className="w-full bg-gray-100 hover:bg-gray-200 focus:bg-gray-500 text-gray-900 placeholder:text-gray-500 rounded-full py-3.5 pl-6 pr-12 outline-none border border-gray-200 focus:border-gray-300 backdrop-blur-md transition-all text-[15px]"
               />
               <AnimatePresence>
                 {replyText && (
@@ -248,14 +248,14 @@ export function StatusViewer({
                     initial={{ opacity: 0, scale: 0.8 }}
                     animate={{ opacity: 1, scale: 1 }}
                     exit={{ opacity: 0, scale: 0.8 }}
-                    className="absolute right-2 top-1/2 -translate-y-1/2 p-2 bg-primary text-black rounded-full hover:bg-primary/90 transition-colors"
+                    className="absolute right-2 top-1/2 -translate-y-1/2 p-2 bg-primary text-white rounded-full hover:bg-primary/90 transition-colors"
                   >
                     <Send size={16} className="ml-0.5" />
                   </motion.button>
                 )}
               </AnimatePresence>
             </div>
-            <button className="p-3.5 bg-white/10 hover:bg-white/20 rounded-full text-white transition-all backdrop-blur-md border border-white/10 shrink-0">
+            <button className="p-3.5 bg-gray-100 hover:bg-gray-500 rounded-full text-gray-900 transition-all backdrop-blur-md border border-gray-200 shrink-0">
               <Heart size={24} />
             </button>
           </>
@@ -270,31 +270,31 @@ export function StatusViewer({
             animate={{ y: 0, opacity: 1 }}
             exit={{ y: "100%", opacity: 0 }}
             transition={{ type: "spring", damping: 25, stiffness: 200 }}
-            className="absolute bottom-0 left-0 right-0 h-2/3 bg-[#0f172a] rounded-t-3xl border-t border-white/10 z-300 flex flex-col shadow-[0_-10px_40px_rgba(0,0,0,0.5)]"
+            className="absolute bottom-0 left-0 right-0 h-2/3 bg-white rounded-t-3xl border-t border-gray-200 z-300 flex flex-col shadow-[0_-10px_40px_rgba(0,0,0,0.5)]"
           >
-             <div className="flex items-center justify-between p-5 border-b border-white/5">
-                <h3 className="text-white font-semibold flex items-center gap-2">
+             <div className="flex items-center justify-between p-5 border-b border-gray-100">
+                <h3 className="text-gray-900 font-semibold flex items-center gap-2">
                    <Eye size={18} className="text-primary"/> 
                    Viewed by {currentStatus.viewers?.length || 0}
                 </h3>
-                <button onClick={() => setShowViewers(false)} className="text-white/50 hover:text-white p-1">
+                <button onClick={() => setShowViewers(false)} className="text-gray-500 hover:text-gray-900 p-1">
                    <X size={20} />
                 </button>
              </div>
              <div className="flex-1 overflow-y-auto p-2 custom-scrollbar">
                 {(!currentStatus.viewers || currentStatus.viewers.length === 0) ? (
-                   <div className="flex flex-col items-center justify-center p-10 text-white/30 text-sm">
+                   <div className="flex flex-col items-center justify-center p-10 text-gray-400 text-sm">
                       No views yet
                    </div>
                 ) : (
                    currentStatus.viewers.map((vid: string) => {
                       const c = contacts.find(contact => contact.id === vid);
                       return (
-                        <div key={vid} className="flex items-center gap-3 p-3 px-4 hover:bg-white/5 rounded-2xl">
-                           <img src={c?.photoURL || emojiToSVG(c?.emoji || '😀')} className="w-12 h-12 rounded-full object-cover border border-white/10 bg-white/5" />
+                        <div key={vid} className="flex items-center gap-3 p-3 px-4 hover:bg-gray-50 rounded-2xl">
+                           <img src={c?.photoURL || emojiToSVG(c?.emoji || '😀')} className="w-12 h-12 rounded-full object-cover border border-gray-200 bg-gray-50" />
                            <div className="flex flex-col">
-                              <span className="text-white font-medium text-[15px]">{c?.name || 'Unknown User'}</span>
-                              <span className="text-white/40 text-[12px]">Viewed status</span>
+                              <span className="text-gray-900 font-medium text-[15px]">{c?.name || 'Unknown User'}</span>
+                              <span className="text-gray-400 text-[12px]">Viewed status</span>
                            </div>
                         </div>
                       )
