@@ -1,68 +1,121 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap');
 @import "tailwindcss";
-@source "./";
 
 @theme {
-  --font-sans: "Poppins", ui-sans-serif, system-ui, sans-serif;
-  --font-inter: "Inter", ui-sans-serif, system-ui, sans-serif;
-  --color-primary: #22d3ee;
-  --color-secondary: #3b82f6;
-  --color-accent: #22d3ee;
+  --color-primary: #8b5cf6;
+  --color-secondary: #c084fc;
 }
 
-:root {
-  --primary-color: #22d3ee;
-  --secondary-color: #3b82f6;
-  --accent-color: #22d3ee;
-  --background-color: #0f172a;
-}
-
-body {
-  @apply bg-[#0f172a] text-white antialiased;
-  background: linear-gradient(180deg, #581c87 0%, #1e1b4b 45%, #0f172a 100%);
-  background-attachment: fixed;
-  font-family: "Poppins", sans-serif;
-  margin: 0;
-  min-height: 100dvh;
-  touch-action: manipulation;
-  overscroll-behavior: none;
-}
-
-#root {
-  width: 100%;
-  height: 100dvh;
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
-  background: transparent;
-}
-
-.glass-morphism {
-  @apply bg-white/5 backdrop-blur-xl border border-white/10 shadow-2xl;
-}
-
-.safe-area-bottom {
-  padding-bottom: env(safe-area-inset-bottom, 1rem);
-}
-
-.chat-bubble-sender {
-  background: linear-gradient(135deg, #3b82f6 0%, #22d3ee 100%);
-  @apply text-white shadow-lg shadow-blue-500/20 border border-white/10;
-}
-
-.chat-bubble-receiver {
-  @apply bg-white/5 backdrop-blur-md text-white border border-white/10 shadow-xl;
-}
-
-/* Scrollbar styling */
+/* Custom Scrollbar for modern clean UI */
 ::-webkit-scrollbar {
-  width: 5px;
+  width: 6px;
+  height: 6px;
 }
 
 ::-webkit-scrollbar-track {
-  @apply bg-transparent;
+  background: transparent;
 }
 
 ::-webkit-scrollbar-thumb {
-  @apply bg-white/20 rounded-full hover:bg-white/30 transition-colors;
+  background: #e5e7eb;
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #d1d5db;
+}
+
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: #f9fafb; /* Soft light background like the image */
+  color: #111827;
+}
+
+/* Smooth background wrapper to match modern minimalist look */
+.auth-bg-wrapper {
+  background: linear-gradient(135deg, #f3f4f6 0%, #f9fafb 100%);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Subtle soft decorative circles if needed, otherwise clean white background */
+.auth-bg-circle {
+  position: absolute;
+  background: linear-gradient(180deg, rgba(79, 70, 229, 0.03) 0%, rgba(129, 140, 248, 0.01) 100%);
+  border-radius: 50%;
+  filter: blur(60px);
+  z-index: 0;
+}
+
+/* Dark Mode Overrides */
+html.dark, html.dark body {
+  background-color: #0f172a !important;
+  color: #f8fafc !important;
+}
+
+html.dark .bg-white {
+  background-color: #1e293b !important;
+}
+
+html.dark .bg-\[\#f8fafc\] {
+  background-color: #0f172a !important;
+}
+
+html.dark .bg-gray-50 {
+  background-color: #1e293b !important;
+}
+
+html.dark .bg-gray-100 {
+  background-color: #334155 !important;
+}
+
+html.dark .text-gray-900 {
+  color: #f8fafc !important;
+}
+
+html.dark .text-gray-700 {
+  color: #e2e8f0 !important;
+}
+
+html.dark .text-gray-500 {
+  color: #94a3b8 !important;
+}
+
+html.dark .text-gray-400 {
+  color: #64748b !important;
+}
+
+html.dark .border-gray-50, html.dark .border-gray-100, html.dark .border-gray-200 {
+  border-color: rgba(255, 255, 255, 0.05) !important;
+}
+
+html.dark .hover\:bg-gray-100:hover {
+  background-color: #475569 !important;
+}
+
+html.dark .hover\:bg-gray-50:hover {
+  background-color: #334155 !important;
+}
+
+html.dark .bg-white\/90 {
+  background-color: rgba(30, 41, 59, 0.9) !important;
+}
+
+html.dark .bg-white\/80 {
+  background-color: rgba(30, 41, 59, 0.8) !important;
+}
+
+html.dark .bg-\[\#f8fafc\]\/80 {
+  background-color: rgba(15, 23, 42, 0.8) !important;
+}
+
+html.dark .glass-morphism {
+  background-color: rgba(30, 41, 59, 0.6) !important;
+  border-color: rgba(255,255,255,0.1) !important;
+}
+
+html.dark .shadow-sm, html.dark .shadow, html.dark .shadow-md, html.dark .shadow-xl, html.dark .shadow-2xl {
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5) !important;
 }
