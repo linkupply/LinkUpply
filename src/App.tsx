@@ -47,14 +47,14 @@ function AppContent() {
 
   if (loading || isLoggingOut || isDeleting) {
     return (
-      <div className="fixed inset-0 flex flex-col items-center justify-center text-white gap-4 bg-[#0a0f1c] z-50">
+      <div className="fixed inset-0 flex flex-col items-center justify-center text-gray-900 gap-4 bg-white text-gray-900 z-50">
         <Logo className="w-16 h-16 animate-pulse" />
         <div className="flex items-center gap-2">
           <div className="w-2 h-2 bg-primary rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
           <div className="w-2 h-2 bg-primary rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
           <div className="w-2 h-2 bg-primary rounded-full animate-bounce" style={{ animationDelay: '300ms' }} />
         </div>
-        <p className="text-white/40 text-xs font-bold uppercase tracking-widest mt-2">Connecting to LinkUpply...</p>
+        <p className="text-gray-900/40 text-xs font-bold uppercase tracking-widest mt-2">Connecting to LinkUpply...</p>
       </div>
     );
   }
@@ -67,6 +67,15 @@ function AppContent() {
 }
 
 export default function App() {
+  useEffect(() => {
+    const savedTheme = localStorage.getItem("theme");
+    if (savedTheme === "dark") {
+      document.documentElement.classList.add("dark");
+    } else {
+      document.documentElement.classList.remove("dark");
+    }
+  }, []);
+
   return (
     <ErrorBoundary>
       <SplashScreen>
