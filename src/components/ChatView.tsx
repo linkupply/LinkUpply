@@ -573,7 +573,7 @@ export function ChatView({
       data-chat-with={contact.id}
       initial={{ opacity: 0, x: 20 }}
       animate={{ opacity: 1, x: 0 }}
-      className="flex flex-col h-full w-full relative text-white overflow-hidden"
+      className="flex flex-col h-full w-full relative text-gray-900 overflow-hidden"
     >
       {activeCall && (
         <CallScreen
@@ -586,11 +586,11 @@ export function ChatView({
       )}
 
       {/* Header */}
-      <header className="flex items-center justify-between p-3 md:p-6 glass-morphism z-20 border-b-0 sticky top-0">
+      <header className="flex items-center justify-between p-3 md:p-6 bg-white/90 backdrop-blur-md z-20 border-b border-gray-100 sticky top-0">
         <div className="flex items-center gap-2 md:gap-4 flex-1 min-w-0">
           <button
             onClick={onBack}
-            className="md:hidden text-white/60 hover:text-white p-2 hover:bg-white/5 rounded-xl transition-colors"
+            className="md:hidden text-gray-500 hover:text-gray-900 p-2 hover:bg-gray-50 rounded-xl transition-colors"
           >
             <ArrowLeft size={20} />
           </button>
@@ -599,27 +599,27 @@ export function ChatView({
               <img
                 src={contactProfile.photoURL || emojiToSVG(contactProfile.emoji)}
                 alt={contactProfile.name}
-                className="w-10 h-10 md:w-12 md:h-12 rounded-2xl shadow-2xl border-2 border-white/10 group-hover:border-primary/50 transition-colors object-cover"
+                className="w-10 h-10 md:w-12 md:h-12 rounded-2xl shadow-2xl border-2 border-gray-200 group-hover:border-primary/50 transition-colors object-cover"
               />
               <div
                 className={`absolute -bottom-1 -right-1 w-3.5 h-3.5 md:w-4 md:h-4 rounded-full border-2 border-[#0f172a] shadow-lg ${isUserOnline(contactProfile) ? "bg-green-500" : "bg-gray-600"}`}
               ></div>
             </div>
             <div className="flex-1 min-w-0">
-              <div className="flex items-center gap-2">
-                <h2 className="font-bold text-white text-base md:text-lg tracking-tight truncate max-w-35 md:max-w-none">
+              <div className="flex items-center gap-1.5">
+                <h2 className="font-semibold text-gray-900 text-[15px] tracking-tight truncate max-w-35 md:max-w-none">
                   {contactProfile.name}
                 </h2>
                 {isOfficialAccount && (
-                  <div className="bg-blue-500 p-0.5 rounded-full shrink-0">
-                    <Check size={10} className="text-white" strokeWidth={4} />
+                  <div className="bg-blue-500 p-0.5 rounded-full shrink-0 shadow-[0_0_8px_rgba(59,130,246,0.2)]">
+                    <Check size={8} className="text-white" strokeWidth={3} />
                   </div>
                 )}
               </div>
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-2 mt-0.5">
                 {isOfficialAccount ? (
-                  <span className="text-[9px] md:text-[10px] font-bold uppercase tracking-widest md:tracking-[0.2em] text-primary truncate">
-                    Official LinkUpply Account
+                  <span className="font-inter text-[13px] text-gray-500 truncate flex-1 font-light tracking-wide">
+                    {contactProfile.bio || "Official LinkUpply Announcements"}
                   </span>
                 ) : contactTyping ? (
                   <motion.span
@@ -631,7 +631,7 @@ export function ChatView({
                   </motion.span>
                 ) : (
                   <span
-                    className={`text-[9px] md:text-[10px] font-bold uppercase tracking-widest md:tracking-[0.2em] truncate ${isUserOnline(contactProfile) ? "text-primary" : "text-white/40"}`}
+                    className={`text-[9px] md:text-[10px] font-bold uppercase tracking-widest md:tracking-[0.2em] truncate ${isUserOnline(contactProfile) ? "text-primary" : "text-gray-400"}`}
                   >
                     {isUserOnline(contactProfile)
                       ? t("Online")
@@ -646,17 +646,17 @@ export function ChatView({
           <div className="flex items-center gap-2 md:gap-4">
             <button
               onClick={() => startCall("voice")}
-              className="p-3 text-white/40 hover:text-primary hover:bg-white/5 rounded-2xl transition-all"
+              className="p-3 text-gray-400 hover:text-primary hover:bg-gray-50 rounded-2xl transition-all"
             >
               <Phone size={22} />
             </button>
             <button
               onClick={() => startCall("video")}
-              className="p-3 text-white/40 hover:text-primary hover:bg-white/5 rounded-2xl transition-all"
+              className="p-3 text-gray-400 hover:text-primary hover:bg-gray-50 rounded-2xl transition-all"
             >
               <Video size={22} />
             </button>
-            <button className="p-3 text-white/40 hover:text-white hover:bg-white/5 rounded-2xl transition-all">
+            <button className="p-3 text-gray-400 hover:text-gray-900 hover:bg-gray-50 rounded-2xl transition-all">
               <MoreVertical size={22} />
             </button>
           </div>
@@ -691,15 +691,15 @@ export function ChatView({
                   onPointerLeave={handlePointerUp}
                 >
                   <div
-                    className={`p-3 md:p-4 px-4 md:px-5 rounded-3xl md:rounded-4xl shadow-xl relative transition-all duration-300 ${
+                    className={`p-3 md:p-4 px-5 md:px-6 rounded-[1.75rem] shadow-sm relative transition-all duration-300 ${
                       isMe
-                        ? "chat-bubble-sender rounded-tr-none"
-                        : "chat-bubble-receiver rounded-tl-none"
+                        ? "bg-primary text-white rounded-br-sm md:rounded-br-sm"
+                        : "bg-white text-gray-900 border border-gray-200 rounded-bl-sm md:rounded-bl-sm"
                     }`}
                   >
                     {msg.replyTo && (
                       <div
-                        className={`mb-2 md:mb-3 p-2 md:p-3 rounded-xl md:rounded-2xl text-[11px] md:text-xs border-l-4 ${isMe ? "bg-black/10 border-white/20" : "bg-white/5 border-primary/40"}`}
+                        className={`mb-2 md:mb-3 p-2 md:p-3 rounded-xl md:rounded-2xl text-[11px] md:text-xs border-l-4 ${isMe ? "bg-gray-100 border-gray-200" : "bg-gray-50 border-primary/40"}`}
                       >
                         <p className="font-bold opacity-80 mb-0.5 md:mb-1">
                           {msg.replyTo.senderName}
@@ -724,7 +724,7 @@ export function ChatView({
                     )}
 
                     {msg.fileUrl && !msg.fileType?.startsWith("image/") && (
-                      <div className="mb-2 md:mb-3 p-2 md:p-3 bg-black/10 rounded-xl md:rounded-2xl flex items-center gap-2 md:gap-3">
+                      <div className="mb-2 md:mb-3 p-2 md:p-3 bg-gray-100 rounded-xl md:rounded-2xl flex items-center gap-2 md:gap-3">
                         <FileText size={18} className="text-primary" />
                         <div className="flex-1 min-w-0">
                           <p className="text-[11px] md:text-xs font-bold truncate">
@@ -739,23 +739,23 @@ export function ChatView({
                     </p>
 
                     {msg.audioUrl && (
-                      <div className="mt-2 flex items-center gap-2 md:gap-3 bg-black/10 p-2 md:p-3 rounded-xl md:rounded-2xl">
+                      <div className="mt-2 flex items-center gap-2 md:gap-3 bg-gray-100 p-2 md:p-3 rounded-xl md:rounded-2xl">
                         <button
                           onClick={() => {
                             const audio = new Audio(msg.audioUrl);
                             audio.play();
                           }}
-                          className="w-8 h-8 md:w-10 md:h-10 bg-primary text-[#0f172a] rounded-full flex items-center justify-center shadow-lg hover:scale-110 transition-transform"
+                          className="w-8 h-8 md:w-10 md:h-10 bg-primary text-white rounded-full flex items-center justify-center shadow-lg hover:scale-110 transition-transform"
                         >
                           <Mic size={16} />
                         </button>
-                        <div className="flex-1 h-1 bg-white/20 rounded-full overflow-hidden">
+                        <div className="flex-1 h-1 bg-gray-500 rounded-full overflow-hidden">
                           <div className="w-1/3 h-full bg-primary shadow-[0_0_10px_rgba(34,211,238,0.5)]"></div>
                         </div>
                       </div>
                     )}
                     <div className="flex items-center justify-end gap-1.5 mt-1.5">
-                      <p className="text-[9px] md:text-[10px] font-bold uppercase tracking-widest text-white/50">
+                      <p className="text-[9px] md:text-[10px] font-bold uppercase tracking-widest text-gray-500">
                         {msg.timestamp?.toDate
                           ? new Date(msg.timestamp.toDate()).toLocaleTimeString(
                               [],
@@ -770,7 +770,7 @@ export function ChatView({
                             className={
                               msg.status === "read"
                                 ? "text-primary"
-                                : "text-white/40"
+                                : "text-gray-400"
                             }
                             strokeWidth={3}
                           />
@@ -778,7 +778,7 @@ export function ChatView({
                             msg.status === "read") && (
                             <Check
                               size={12}
-                              className={`-ml-2 ${msg.status === "read" ? "text-primary" : "text-white/40"}`}
+                              className={`-ml-2 ${msg.status === "read" ? "text-primary" : "text-gray-400"}`}
                               strokeWidth={3}
                             />
                           )}
@@ -789,7 +789,7 @@ export function ChatView({
                     {/* Reactions Display */}
                     {hasReactions && (
                       <div
-                        className={`absolute -bottom-4 ${isMe ? "right-4" : "left-4"} flex gap-1.5 glass-morphism rounded-full px-2.5 py-1 shadow-2xl z-10 border-white/20`}
+                        className={`absolute -bottom-4 ${isMe ? "right-4" : "left-4"} flex gap-1.5 bg-white border border-gray-200 rounded-full px-2.5 py-1 shadow-sm z-10`}
                       >
                         {Object.entries(msg.reactions).map(
                           ([emoji, uids]: [string, any]) => (
@@ -815,7 +815,7 @@ export function ChatView({
                     >
                       <button
                         onClick={() => setReplyingTo(msg)}
-                        className="p-2.5 glass-morphism rounded-full text-white/60 hover:text-primary hover:scale-110 transition-all"
+                        className="p-2.5 bg-white border border-gray-100 shadow-sm rounded-full text-gray-500 hover:text-primary hover:scale-110 transition-all"
                       >
                         <Smile size={16} />
                       </button>
@@ -844,9 +844,9 @@ export function ChatView({
                 top: Math.min(messageMenu.y, window.innerHeight - 250),
                 left: Math.min(messageMenu.x, window.innerWidth - 200),
               }}
-              className="fixed z-70 glass-morphism rounded-4xl p-3 min-w-45 border-white/20"
+              className="fixed z-70 bg-white shadow-2xl rounded-4xl p-3 min-w-45 border border-gray-100"
             >
-              <div className="flex justify-around p-3 border-b border-white/10 mb-3">
+              <div className="flex justify-around p-3 border-b border-gray-200 mb-3">
                 {["❤️", "👍", "😂", "😮", "😢", "🙏"].map((emoji) => (
                   <button
                     key={emoji}
@@ -865,7 +865,7 @@ export function ChatView({
                     );
                     setMessageMenu(null);
                   }}
-                  className="w-full text-left px-4 py-3 hover:bg-white/10 rounded-2xl text-sm font-bold transition-colors flex items-center gap-3"
+                  className="w-full text-left px-4 py-3 hover:bg-gray-100 rounded-2xl text-sm font-bold transition-colors flex items-center gap-3"
                 >
                   <ArrowLeft size={16} className="rotate-180 text-primary" />{" "}
                   Reply
@@ -875,7 +875,7 @@ export function ChatView({
                     onForward(messages.find((m) => m.id === messageMenu.id));
                     setMessageMenu(null);
                   }}
-                  className="w-full text-left px-4 py-3 hover:bg-white/10 rounded-2xl text-sm font-bold transition-colors flex items-center gap-3"
+                  className="w-full text-left px-4 py-3 hover:bg-gray-100 rounded-2xl text-sm font-bold transition-colors flex items-center gap-3"
                 >
                   <ArrowRight size={16} className="text-primary" /> Forward
                 </button>
@@ -885,7 +885,7 @@ export function ChatView({
                       messages.find((m) => m.id === messageMenu.id)?.text,
                     )
                   }
-                  className="w-full text-left px-4 py-3 hover:bg-white/10 rounded-2xl text-sm font-bold transition-colors flex items-center gap-3"
+                  className="w-full text-left px-4 py-3 hover:bg-gray-100 rounded-2xl text-sm font-bold transition-colors flex items-center gap-3"
                 >
                   <Sparkles size={16} className="text-primary" /> Copy
                 </button>
@@ -917,14 +917,14 @@ export function ChatView({
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              className="absolute inset-0 bg-black/60 backdrop-blur-sm"
+              className="absolute inset-0 bg-white/60 backdrop-blur-sm"
               onClick={() => setDeleteConfirm(null)}
             />
             <motion.div
               initial={{ scale: 0.9, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.9, opacity: 0 }}
-              className="relative w-full max-w-xs glass-morphism rounded-[2.5rem] p-6 border border-white/10 shadow-2xl"
+              className="relative w-full max-w-xs bg-white rounded-[2.5rem] p-6 border border-gray-200 shadow-2xl"
             >
               <h3 className="text-lg font-bold mb-6 text-center">
                 Delete Message?
@@ -934,20 +934,20 @@ export function ChatView({
                   user?.email === "linkupply207@gmail.com") && (
                   <button
                     onClick={() => deleteMessage(deleteConfirm.id, "everyone")}
-                    className="w-full py-4 bg-red-500 text-white font-bold rounded-2xl shadow-lg shadow-red-500/20 hover:brightness-110 transition"
+                    className="w-full py-4 bg-red-500 text-gray-900 font-bold rounded-2xl shadow-lg shadow-red-500/20 hover:brightness-110 transition"
                   >
                     Delete for everyone
                   </button>
                 )}
                 <button
                   onClick={() => deleteMessage(deleteConfirm.id, "me")}
-                  className="w-full py-4 bg-white/5 text-white font-bold rounded-2xl border border-white/10 hover:bg-white/10 transition"
+                  className="w-full py-4 bg-gray-50 text-gray-900 font-bold rounded-2xl border border-gray-200 hover:bg-gray-100 transition"
                 >
                   Delete for me
                 </button>
                 <button
                   onClick={() => setDeleteConfirm(null)}
-                  className="w-full py-4 text-white/40 font-bold hover:text-white transition"
+                  className="w-full py-4 text-gray-400 font-bold hover:text-gray-900 transition"
                 >
                   Cancel
                 </button>
@@ -965,7 +965,7 @@ export function ChatView({
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              className="absolute inset-0 bg-black/90 backdrop-blur-xl"
+              className="absolute inset-0 bg-white/90 backdrop-blur-xl"
               onClick={() => setShowImageModal(null)}
             />
             <motion.div
@@ -981,7 +981,7 @@ export function ChatView({
               />
               <button
                 onClick={() => setShowImageModal(null)}
-                className="absolute top-4 right-4 p-3 bg-white/10 hover:bg-white/20 rounded-full text-white transition-colors"
+                className="absolute top-4 right-4 p-3 bg-gray-100 hover:bg-gray-500 rounded-full text-gray-900 transition-colors"
               >
                 <X size={32} />
               </button>
@@ -991,10 +991,10 @@ export function ChatView({
       </AnimatePresence>
 
       {/* Composer */}
-      <div className="p-4 md:p-6 glass-morphism z-20 border-t-0 rounded-t-[3rem]">
+      <div className="p-4 md:p-6 bg-white/90 backdrop-blur-md border-t border-gray-100 z-20 rounded-t-none md:rounded-t-[3rem]">
         {!canSend ? (
-          <div className="p-4 bg-white/5 rounded-4xl border border-white/10 text-center">
-            <p className="text-white/40 font-bold uppercase tracking-[0.2em] text-xs">
+          <div className="p-4 bg-gray-50 rounded-4xl border border-gray-200 text-center">
+            <p className="text-gray-400 font-bold uppercase tracking-[0.2em] text-xs">
               Only LinkUpply can send messages
             </p>
           </div>
@@ -1006,24 +1006,24 @@ export function ChatView({
                   initial={{ height: 0, opacity: 0 }}
                   animate={{ height: "auto", opacity: 1 }}
                   exit={{ height: 0, opacity: 0 }}
-                  className="bg-white/5 rounded-2xl border border-white/10 p-4 flex items-center justify-between mb-4"
+                  className="bg-gray-50 rounded-2xl border border-gray-200 p-4 flex items-center justify-between mb-4"
                 >
                   <div className="flex items-center gap-4">
                     <div className="w-12 h-12 bg-primary/20 rounded-2xl flex items-center justify-center shadow-lg">
                       <FileText size={24} className="text-primary" />
                     </div>
                     <div className="overflow-hidden">
-                      <p className="text-sm font-bold text-white truncate">
+                      <p className="text-sm font-bold text-gray-900 truncate">
                         {attachment.name}
                       </p>
-                      <p className="text-xs text-white/40 font-bold uppercase tracking-widest">
+                      <p className="text-xs text-gray-400 font-bold uppercase tracking-widest">
                         {(attachment.size / 1024).toFixed(1)} KB
                       </p>
                     </div>
                   </div>
                   <button
                     onClick={() => setAttachment(null)}
-                    className="text-white/40 hover:text-white p-2 hover:bg-white/5 rounded-xl transition-colors"
+                    className="text-gray-400 hover:text-gray-900 p-2 hover:bg-gray-50 rounded-xl transition-colors"
                   >
                     <X size={20} />
                   </button>
@@ -1034,19 +1034,19 @@ export function ChatView({
                   initial={{ height: 0, opacity: 0 }}
                   animate={{ height: "auto", opacity: 1 }}
                   exit={{ height: 0, opacity: 0 }}
-                  className="bg-white/5 rounded-2xl border border-white/10 p-4 flex items-center justify-between mb-4"
+                  className="bg-gray-50 rounded-2xl border border-gray-200 p-4 flex items-center justify-between mb-4"
                 >
                   <div className="border-l-4 border-primary pl-4 overflow-hidden">
                     <p className="text-xs font-bold text-primary uppercase tracking-widest mb-1">
                       {replyingTo.senderId === user?.uid ? "You" : contact.name}
                     </p>
-                    <p className="text-sm text-white/60 truncate font-medium">
+                    <p className="text-sm text-gray-500 truncate font-medium">
                       {replyingTo.text}
                     </p>
                   </div>
                   <button
                     onClick={() => setReplyingTo(null)}
-                    className="text-white/40 hover:text-white p-2 hover:bg-white/5 rounded-xl transition-colors"
+                    className="text-gray-400 hover:text-gray-900 p-2 hover:bg-gray-50 rounded-xl transition-colors"
                   >
                     <X size={20} />
                   </button>
@@ -1055,24 +1055,24 @@ export function ChatView({
             </AnimatePresence>
 
             {isBlocked ? (
-              <div className="flex justify-center items-center p-4 bg-white/5 border border-white/10 rounded-2xl">
-                <span className="text-white/60 font-medium">You cannot send messages to this contact.</span>
+              <div className="flex justify-center items-center p-4 bg-gray-50 border border-gray-200 rounded-2xl">
+                <span className="text-gray-500 font-medium">You cannot send messages to this contact.</span>
               </div>
             ) : canSend ? (
             <form onSubmit={handleSend} className="flex flex-col gap-4">
               {showSchedule && (
-                <div className="flex items-center gap-3 p-3 bg-white/5 rounded-2xl border border-white/10">
+                <div className="flex items-center gap-3 p-3 bg-gray-50 rounded-2xl border border-gray-200">
                   <Clock size={18} className="text-primary" />
                   <input
                     type="datetime-local"
                     value={scheduledTime}
                     onChange={(e) => setScheduledTime(e.target.value)}
-                    className="bg-transparent text-sm text-white outline-none flex-1 font-bold"
+                    className="bg-transparent text-sm text-gray-900 outline-none flex-1 font-bold"
                   />
                   <button
                     type="button"
                     onClick={() => setShowSchedule(false)}
-                    className="text-white/40 hover:text-white"
+                    className="text-gray-400 hover:text-gray-900"
                   >
                     <X size={18} />
                   </button>
@@ -1085,7 +1085,7 @@ export function ChatView({
                     initial={{ height: 0, opacity: 0 }}
                     animate={{ height: "auto", opacity: 1 }}
                     exit={{ height: 0, opacity: 0 }}
-                    className="flex flex-wrap gap-2 p-4 bg-white/5 rounded-4xl border border-white/10 mb-4 max-h-50 overflow-y-auto custom-scrollbar"
+                    className="flex flex-wrap gap-2 p-4 bg-gray-50 rounded-4xl border border-gray-200 mb-4 max-h-50 overflow-y-auto custom-scrollbar"
                   >
                     {[
                       "😀",
@@ -1137,18 +1137,18 @@ export function ChatView({
               </AnimatePresence>
 
               <div className="flex items-center gap-2 md:gap-3">
-                <div className="flex items-center gap-1 bg-white/5 rounded-full p-1 border border-white/10">
+                <div className="flex items-center gap-1 bg-gray-50 rounded-full p-1 border border-gray-200">
                   <button
                     type="button"
                     onClick={() => setShowEmojiPicker(!showEmojiPicker)}
-                    className={`p-3 rounded-full transition-all ${showEmojiPicker ? "bg-primary text-[#0f172a]" : "text-white/40 hover:text-white hover:bg-white/5"}`}
+                    className={`p-3 rounded-full transition-all ${showEmojiPicker ? "bg-primary text-white" : "text-gray-400 hover:text-gray-900 hover:bg-gray-50"}`}
                   >
                     <Smile size={24} />
                   </button>
                   <button
                     type="button"
                     onClick={() => fileInputRef.current?.click()}
-                    className="p-3 text-white/40 hover:text-white hover:bg-white/5 rounded-full transition-all"
+                    className="p-3 text-gray-400 hover:text-gray-900 hover:bg-gray-50 rounded-full transition-all"
                   >
                     <Paperclip size={24} className="rotate-45" />
                   </button>
@@ -1185,7 +1185,7 @@ export function ChatView({
                     placeholder={
                       isRecording ? t("Recording Audio...") : t("Type a message...")
                     }
-                    className={`w-full bg-white/5 border border-white/10 rounded-3xl px-4 md:px-6 py-3 md:py-4 text-white focus:border-primary/50 outline-none text-sm md:text-base font-medium transition-all placeholder:text-white/20 resize-none custom-scrollbar wrap-break-word ${isRecording ? "border-red-500/50 shadow-[0_0_20px_rgba(239,68,68,0.2)]" : ""}`}
+                    className={`w-full bg-gray-50 border border-gray-200 rounded-3xl px-4 md:px-6 py-3 md:py-4 text-gray-900 focus:border-primary/50 outline-none text-sm md:text-base font-medium transition-all placeholder:text-gray-400 resize-none custom-scrollbar wrap-break-word ${isRecording ? "border-red-500/50 shadow-[0_0_20px_rgba(239,68,68,0.2)]" : ""}`}
                   />
                   {isRecording && (
                     <motion.div
@@ -1204,7 +1204,7 @@ export function ChatView({
                       whileHover={{ scale: 1.05 }}
                       whileTap={{ scale: 0.9 }}
                       type="submit"
-                      className="bg-primary text-[#0f172a] p-4 rounded-full shadow-2xl shadow-primary/30"
+                      className="bg-primary text-white p-4 rounded-full shadow-2xl shadow-primary/30"
                     >
                       <Send size={24} strokeWidth={2.5} />
                     </motion.button>
@@ -1220,7 +1220,7 @@ export function ChatView({
                       onMouseLeave={stopRecording}
                       onTouchStart={startRecording}
                       onTouchEnd={stopRecording}
-                      className={`p-4 rounded-full transition-all ${isRecording ? "bg-red-500 text-white shadow-[0_0_20px_rgba(239,68,68,0.4)]" : "bg-white/5 text-white/40 hover:text-white hover:bg-white/10 border border-white/10"}`}
+                      className={`p-4 rounded-full transition-all ${isRecording ? "bg-red-500 text-gray-900 shadow-[0_0_20px_rgba(239,68,68,0.4)]" : "bg-gray-50 text-gray-400 hover:text-gray-900 hover:bg-gray-100 border border-gray-200"}`}
                     >
                       <Mic size={24} />
                     </motion.button>
@@ -1239,18 +1239,18 @@ export function ChatView({
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: "100%" }}
             transition={{ type: "spring", stiffness: 300, damping: 30 }}
-            className="absolute inset-0 z-100 bg-[#0a0f1c] flex flex-col overflow-y-auto custom-scrollbar"
+            className="absolute inset-0 z-100 bg-[#f8fafc] flex flex-col overflow-y-auto custom-scrollbar"
           >
-            <div className="sticky top-0 bg-[#0a0f1c]/80 backdrop-blur-xl z-20 flex items-center px-4 py-4 gap-4 border-b border-white/5">
+            <div className="sticky top-0 bg-[#f8fafc]/80 backdrop-blur-xl z-20 flex items-center px-4 py-4 gap-4 border-b border-gray-100">
               <button
                 onClick={() => setShowContactInfo(false)}
-                className="p-2 text-white/70 hover:text-white rounded-full hover:bg-white/10 transition-colors"
+                className="p-2 text-gray-600 hover:text-gray-900 rounded-full hover:bg-gray-100 transition-colors"
                 title="Go back"
               >
                 <ArrowLeft size={24} />
               </button>
-              <h2 className="text-xl font-medium text-white tracking-tight flex-1">{t("Contact Info")}</h2>
-              <button className="p-2 text-white/50 hover:text-white rounded-full hover:bg-white/10 transition-colors">
+              <h2 className="text-xl font-medium text-gray-900 tracking-tight flex-1">{t("Contact Info")}</h2>
+              <button className="p-2 text-gray-500 hover:text-gray-900 rounded-full hover:bg-gray-100 transition-colors">
                 <MoreVertical size={20} />
               </button>
             </div>
@@ -1263,16 +1263,16 @@ export function ChatView({
                 <img
                   src={contactProfile.photoURL || emojiToSVG(contactProfile.emoji)}
                   alt={contactProfile.name}
-                  className="w-32 h-32 md:w-40 md:h-40 rounded-[2.5rem] shadow-2xl border-4 border-white/10 object-cover"
+                  className="w-32 h-32 md:w-40 md:h-40 rounded-[2.5rem] shadow-2xl border-4 border-gray-200 object-cover"
                 />
                 <div
                   className={`absolute -bottom-2 -right-2 w-6 h-6 rounded-full border-4 border-[#0a0f1c] shadow-lg ${isUserOnline(contactProfile) ? "bg-green-500" : "bg-gray-600"}`}
                 ></div>
               </div>
-              <h1 className="text-2xl md:text-3xl font-bold text-white mb-2">{contactProfile.name}</h1>
-              <p className="text-white/60 text-lg mb-3">{contactProfile.linkupId}</p>
+              <h1 className="text-2xl md:text-3xl font-bold text-gray-900 mb-2">{contactProfile.name}</h1>
+              <p className="text-gray-500 text-lg mb-3">{contactProfile.linkupId}</p>
               
-              <div className="text-sm font-medium text-white/40 mb-8">
+              <div className="text-sm font-medium text-gray-400 mb-8">
                 {isUserOnline(contactProfile) ? (
                    <span className="text-primary font-bold">{t("Online")}</span>
                 ) : (
@@ -1284,24 +1284,24 @@ export function ChatView({
               <div className="flex items-center gap-4 w-full max-w-sm px-2">
                 <button 
                   onClick={() => setShowContactInfo(false)}
-                  className="flex-1 bg-white/5 hover:bg-white/10 border border-white/10 rounded-3xl py-4 flex flex-col items-center gap-2 transition-all"
+                  className="flex-1 bg-gray-50 hover:bg-gray-100 border border-gray-200 rounded-3xl py-4 flex flex-col items-center gap-2 transition-all"
                 >
-                  <MessageSquare size={24} className="text-white/80" />
-                  <span className="text-white font-medium text-sm">Message</span>
+                  <MessageSquare size={24} className="text-gray-700" />
+                  <span className="text-gray-900 font-medium text-sm">Message</span>
                 </button>
                 <button 
                   onClick={() => { setShowContactInfo(false); startCall("voice"); }}
-                  className="flex-1 bg-white/5 hover:bg-white/10 border border-white/10 rounded-3xl py-4 flex flex-col items-center gap-2 transition-all"
+                  className="flex-1 bg-gray-50 hover:bg-gray-100 border border-gray-200 rounded-3xl py-4 flex flex-col items-center gap-2 transition-all"
                 >
-                  <Phone size={24} className="text-white/80" />
-                  <span className="text-white font-medium text-sm">Audio</span>
+                  <Phone size={24} className="text-gray-700" />
+                  <span className="text-gray-900 font-medium text-sm">Audio</span>
                 </button>
                 <button 
                   onClick={() => { setShowContactInfo(false); startCall("video"); }}
-                  className="flex-1 bg-white/5 hover:bg-white/10 border border-white/10 rounded-3xl py-4 flex flex-col items-center gap-2 transition-all"
+                  className="flex-1 bg-gray-50 hover:bg-gray-100 border border-gray-200 rounded-3xl py-4 flex flex-col items-center gap-2 transition-all"
                 >
-                  <Video size={24} className="text-white/80" />
-                  <span className="text-white font-medium text-sm">Video</span>
+                  <Video size={24} className="text-gray-700" />
+                  <span className="text-gray-900 font-medium text-sm">Video</span>
                 </button>
               </div>
             </div>
@@ -1309,14 +1309,14 @@ export function ChatView({
             {/* Additional Info Cards */}
             <div className="px-4 pb-12 space-y-4">
               {contactProfile.bio && (
-                <div className="bg-white/2 border border-white/5 rounded-3xl p-5">
-                  <h3 className="text-white/40 text-sm font-bold uppercase tracking-wider mb-2">{t("About")}</h3>
-                  <p className="text-white text-base leading-relaxed wrap-break-word">{contactProfile.bio}</p>
+                <div className="bg-gray-50 border border-gray-100 rounded-3xl p-5">
+                  <h3 className="text-gray-400 text-sm font-bold uppercase tracking-wider mb-2">{t("About")}</h3>
+                  <p className="text-gray-900 text-base leading-relaxed wrap-break-word">{contactProfile.bio}</p>
                 </div>
               )}
               
-              <div className="bg-white/2 border border-white/5 rounded-3xl overflow-hidden mt-6">
-                 <button onClick={handleBlockContact} className="w-full flex items-center justify-between p-5 hover:bg-white/4 transition-colors text-left text-red-500 font-medium">
+              <div className="bg-gray-50 border border-gray-100 rounded-3xl overflow-hidden mt-6">
+                 <button onClick={handleBlockContact} className="w-full flex items-center justify-between p-5 hover:bg-gray-100 transition-colors text-left text-red-500 font-medium">
                    <div className="flex items-center gap-4">
                      <div className="w-10 h-10 flex items-center justify-center bg-red-500/10 text-red-500 rounded-full">
                        <UserX size={20} />
@@ -1324,10 +1324,10 @@ export function ChatView({
                      <span className="text-lg">Block {contactProfile.name}</span>
                    </div>
                  </button>
-                 <div className="w-full h-px bg-white/5"></div>
+                 <div className="w-full h-px bg-gray-50"></div>
                  <button onClick={() => {
                    showSystemNotification("Report Submitted", `${contactProfile.name} has been reported.`);
-                 }} className="w-full flex items-center justify-between p-5 hover:bg-white/4 transition-colors text-left text-red-500 font-medium">
+                 }} className="w-full flex items-center justify-between p-5 hover:bg-gray-100 transition-colors text-left text-red-500 font-medium">
                    <div className="flex items-center gap-4">
                      <div className="w-10 h-10 flex items-center justify-center bg-red-500/10 text-red-500 rounded-full">
                        <AlertTriangle size={20} />
