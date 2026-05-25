@@ -226,7 +226,7 @@ export function Updates({ contacts }: { contacts: any[] }) {
       className="p-0 h-full overflow-y-auto custom-scrollbar flex flex-col w-full relative pb-24 md:pb-4"
     >
       <div className="px-6 pt-6 pb-2">
-        <h2 className="text-2xl font-bold text-white tracking-tight">
+        <h2 className="text-2xl font-bold text-gray-900 tracking-tight">
           {t("Updates")}
         </h2>
       </div>
@@ -235,33 +235,33 @@ export function Updates({ contacts }: { contacts: any[] }) {
         {/* Add Status Button Pattern */}
         <div 
            onClick={() => fileInputRef.current?.click()}
-           className="flex items-center gap-4 p-3 hover:bg-white/4 rounded-2xl cursor-pointer transition-colors active:bg-white/8"
+           className="flex items-center gap-4 p-3 hover:bg-gray-100 rounded-2xl cursor-pointer transition-colors active:bg-gray-200"
         >
-          <div className="w-13 h-13 shrink-0 rounded-full overflow-hidden bg-white/5 flex items-center justify-center relative border border-white/10">
+          <div className="w-13 h-13 shrink-0 rounded-full overflow-hidden bg-gray-50 flex items-center justify-center relative border border-gray-200">
              <img src={profile?.photoURL || emojiToSVG(profile?.emoji || "😀")} className="w-full h-full object-cover opacity-50" alt="Me" />
              <div className="absolute inset-0 flex items-center justify-center">
-                 <div className="w-6 h-6 rounded-full bg-primary text-black flex items-center justify-center shadow-lg">
+                 <div className="w-6 h-6 rounded-full bg-primary text-white flex items-center justify-center shadow-lg">
                    <Plus size={16} strokeWidth={3} />
                  </div>
              </div>
           </div>
           <div className="flex-1">
-             <h3 className="text-[16px] font-medium text-white">{t("My status")}</h3>
-             <p className="text-[13px] text-white/50">{t("Tap to add status update")}</p>
+             <h3 className="text-[16px] font-medium text-gray-900">{t("My status")}</h3>
+             <p className="text-[13px] text-gray-500">{t("Tap to add status update")}</p>
           </div>
         </div>
 
-        <h3 className="text-[13px] font-bold text-white/40 uppercase tracking-widest mt-8 mb-4 px-2">
+        <h3 className="text-[13px] font-bold text-gray-400 uppercase tracking-widest mt-8 mb-4 px-2">
           {t("Recent updates")}
         </h3>
 
         {otherGroups.length === 0 && myStatusesGroup.length === 0 ? (
-          <div className="text-center p-8 bg-white/2 rounded-3xl border border-white/5">
-            <div className="w-16 h-16 bg-white/5 rounded-full flex items-center justify-center mx-auto mb-4 text-white/30">
+          <div className="text-center p-8 bg-gray-50 rounded-3xl border border-gray-100">
+            <div className="w-16 h-16 bg-gray-50 rounded-full flex items-center justify-center mx-auto mb-4 text-gray-400">
               <ImageIcon size={28} />
             </div>
-            <h4 className="text-white font-medium mb-1">No updates yet</h4>
-            <p className="text-white/40 text-[14px]">
+            <h4 className="text-gray-900 font-medium mb-1">No updates yet</h4>
+            <p className="text-gray-400 text-[14px]">
               Check back later for new stories from your contacts.
             </p>
           </div>
@@ -280,7 +280,7 @@ export function Updates({ contacts }: { contacts: any[] }) {
                     statuses: myStatusesGroup,
                   })
                 }
-                className="flex items-center gap-4 p-3 hover:bg-white/4 rounded-2xl cursor-pointer transition-colors active:bg-white/8"
+                className="flex items-center gap-4 p-3 hover:bg-gray-100 rounded-2xl cursor-pointer transition-colors active:bg-gray-200"
               >
                 <div className="w-13 h-13 shrink-0 rounded-full overflow-hidden border-2 border-primary p-0.5">
                   <img
@@ -292,10 +292,10 @@ export function Updates({ contacts }: { contacts: any[] }) {
                   />
                 </div>
                 <div className="flex-1">
-                  <h3 className="text-[16px] font-medium text-white">
+                  <h3 className="text-[16px] font-medium text-gray-900">
                     My status (View)
                   </h3>
-                  <p className="text-[13px] text-white/50">
+                  <p className="text-[13px] text-gray-500">
                     {new Date(
                       myStatusesGroup[myStatusesGroup.length - 1].timestamp,
                     ).toLocaleTimeString([], {
@@ -311,20 +311,20 @@ export function Updates({ contacts }: { contacts: any[] }) {
               <div
                 key={idx}
                 onClick={() => handleViewGroup(group)}
-                className="flex items-center gap-4 p-3 hover:bg-white/4 rounded-2xl cursor-pointer transition-colors active:bg-white/8"
+                className="flex items-center gap-4 p-3 hover:bg-gray-100 rounded-2xl cursor-pointer transition-colors active:bg-gray-200"
               >
                 <div className="w-13 h-13 shrink-0 rounded-full overflow-hidden border-2 border-emerald-500 p-0.5">
                   <img
                     src={group.user.photo}
                     alt={group.user.name}
-                    className="w-full h-full object-cover rounded-full bg-white/10"
+                    className="w-full h-full object-cover rounded-full bg-gray-100"
                   />
                 </div>
                 <div className="flex-1">
-                  <h3 className="text-[16px] font-medium text-white">
+                  <h3 className="text-[16px] font-medium text-gray-900">
                     {group.user.name}
                   </h3>
-                  <p className="text-[13px] text-white/50">
+                  <p className="text-[13px] text-gray-500">
                     {new Date(
                       group.statuses[group.statuses.length - 1].timestamp,
                     ).toLocaleTimeString([], {
@@ -353,7 +353,7 @@ export function Updates({ contacts }: { contacts: any[] }) {
             initial={{ opacity: 0, y: 50 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 50 }}
-            className="absolute bottom-6 left-1/2 -translate-x-1/2 bg-[#1e293b] border border-white/10 text-white px-6 py-3 rounded-full flex items-center gap-3 shadow-2xl z-50 whitespace-nowrap"
+            className="absolute bottom-6 left-1/2 -translate-x-1/2 bg-gray-900 text-white px-6 py-3 rounded-full flex items-center gap-3 shadow-2xl z-50 whitespace-nowrap"
           >
             <div className="w-4 h-4 border-2 border-primary border-t-transparent rounded-full animate-spin" />
             <span className="text-sm font-medium">Uploading status...</span>
