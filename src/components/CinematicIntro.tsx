@@ -41,7 +41,7 @@ export function CinematicIntro() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0, transition: { duration: 0.8 } }}
-          className="fixed inset-0 z-99999 flex flex-col items-center justify-center glass-panel overflow-hidden bg-black"
+          className="fixed inset-0 z-99999 flex flex-col items-center justify-center glass-panel overflow-hidden bg-white"
         >
           {/* Hyperspace / Starfield Background */}
           <div className="absolute inset-0 overflow-hidden pointer-events-none" style={{ willChange: 'transform' }}>
@@ -90,7 +90,7 @@ export function CinematicIntro() {
 
           <button
             onClick={handleSkip}
-            className="absolute top-8 right-8 px-6 py-2 border border-white/20 rounded-full text-white/70 hover:text-white hover:bg-white/10 hover:border-white/50 transition-all z-50 text-xs tracking-[0.2em] uppercase font-bold backdrop-blur-md"
+            className="absolute top-8 right-8 px-6 py-2 border border-gray-200 rounded-full text-gray-600 hover:text-gray-900 hover:bg-gray-100 hover:border-gray-1000 transition-all z-50 text-xs tracking-[0.2em] uppercase font-bold backdrop-blur-md"
           >
             Skip
           </button>
@@ -108,7 +108,7 @@ export function CinematicIntro() {
                     visible: { transition: { staggerChildren: 0.1 } },
                     hidden: {}
                   }}
-                  className="text-white/80 font-mono text-sm sm:text-lg md:text-xl uppercase mb-10 z-10 font-bold tracking-[0.5em] flex items-center gap-1"
+                  className="text-gray-700 font-mono text-sm sm:text-lg md:text-xl uppercase mb-10 z-10 font-bold tracking-[0.5em] flex items-center gap-1"
                 >
                   {/* Glitch / Reveal effect for "BUILD BY" */}
                   {"BUILD BY".split("").map((char, index) => (
@@ -190,7 +190,7 @@ export function CinematicIntro() {
                       className="absolute top-1/2 -translate-y-1/2 w-100 h-1.25 bg-white shadow-[0_0_50px_15px_#fff,0_0_100px_30px_#0ea5e9] z-50 pointer-events-none skew-x-45"
                     />
                     
-                    <div className="flex text-[5rem] sm:text-[8rem] md:text-[13rem] lg:text-[16rem] font-black uppercase tracking-tighter leading-[0.85] text-white" style={{ willChange: 'opacity, transform' }}>
+                    <div className="flex text-[5rem] sm:text-[8rem] md:text-[13rem] lg:text-[16rem] font-black uppercase tracking-tighter leading-[0.85] text-gray-900" style={{ willChange: 'opacity, transform' }}>
                       {"ATIF".split("").map((char, i) => (
                         <motion.span
                           key={i}
@@ -214,7 +214,7 @@ export function CinematicIntro() {
                       initial={{ scale: 0, opacity: 1, borderWidth: '0px' }}
                       animate={{ scale: [1, 3], opacity: [1, 0], borderWidth: ['10px', '0px'] }}
                       transition={{ duration: 1.5, ease: 'easeOut' }}
-                      className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-50 h-12.5 rounded-[100%] border-white mix-blend-screen -z-10"
+                      className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-50 h-12.5 rounded-[100%] border-gray-200 mix-blend-screen -z-10"
                     />
 
                     {/* Massive colored bloom */}
