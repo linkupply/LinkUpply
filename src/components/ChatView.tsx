@@ -93,7 +93,7 @@ export function ChatView({
   } | null>(null);
 
   const isOfficialAccount =
-    contact.id === "linkup_official" || contact.official;
+    contact.id === "linkup_official" || contact.uid === "linkup_official" || contactProfile?.id === "linkup_official" || contactProfile?.uid === "linkup_official" || contact.official || contact.isOfficial || contactProfile?.official || contactProfile?.isOfficial;
   const isAdmin = user?.email === "linkupply207@gmail.com";
   const canSend = !isOfficialAccount || isAdmin;
 
@@ -602,7 +602,7 @@ export function ChatView({
                 className="w-10 h-10 md:w-12 md:h-12 rounded-2xl shadow-2xl border-2 border-gray-200 group-hover:border-primary/50 transition-colors object-cover"
               />
               <div
-                className={`absolute -bottom-1 -right-1 w-3.5 h-3.5 md:w-4 md:h-4 rounded-full border-2 border-[#0f172a] shadow-lg ${isUserOnline(contactProfile) ? "bg-green-500" : "bg-gray-600"}`}
+                className={`absolute -bottom-1 -right-1 w-3.5 h-3.5 md:w-4 md:h-4 rounded-full border-2 border-white shadow-lg ${isUserOnline(contactProfile) ? "bg-green-500" : "bg-gray-600"}`}
               ></div>
             </div>
             <div className="flex-1 min-w-0">
@@ -611,7 +611,7 @@ export function ChatView({
                   {contactProfile.name}
                 </h2>
                 {isOfficialAccount && (
-                  <div className="bg-blue-500 p-0.5 rounded-full shrink-0 shadow-[0_0_8px_rgba(59,130,246,0.2)]">
+                  <div className="bg-blue-500 p-0.5 rounded-full shrink-0 shadow-[0_0_8px_rgba(59,130,246,0.2)] flex items-center justify-center">
                     <Check size={8} className="text-white" strokeWidth={3} />
                   </div>
                 )}
@@ -1266,10 +1266,17 @@ export function ChatView({
                   className="w-32 h-32 md:w-40 md:h-40 rounded-[2.5rem] shadow-2xl border-4 border-gray-200 object-cover"
                 />
                 <div
-                  className={`absolute -bottom-2 -right-2 w-6 h-6 rounded-full border-4 border-[#0a0f1c] shadow-lg ${isUserOnline(contactProfile) ? "bg-green-500" : "bg-gray-600"}`}
+                  className={`absolute -bottom-2 -right-2 w-6 h-6 rounded-full border-4 border-white shadow-lg ${isUserOnline(contactProfile) ? "bg-green-500" : "bg-gray-600"}`}
                 ></div>
               </div>
-              <h1 className="text-2xl md:text-3xl font-bold text-gray-900 mb-2">{contactProfile.name}</h1>
+              <div className="flex items-center gap-2 mb-2">
+                <h1 className="text-2xl md:text-3xl font-bold text-gray-900">{contactProfile.name}</h1>
+                {isOfficialAccount && (
+                  <div className="bg-blue-500 p-1 rounded-full shrink-0 shadow-[0_0_12px_rgba(59,130,246,0.3)] flex items-center justify-center">
+                    <Check size={14} className="text-white" strokeWidth={4} />
+                  </div>
+                )}
+              </div>
               <p className="text-gray-500 text-lg mb-3">{contactProfile.linkupId}</p>
               
               <div className="text-sm font-medium text-gray-400 mb-8">
