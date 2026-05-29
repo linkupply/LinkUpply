@@ -703,7 +703,7 @@ export function Main() {
                                 contact.photoURL || emojiToSVG(contact.emoji)
                               }
                               alt={contact.name}
-                              className={`w-14 h-14 rounded-full object-cover ${contact.isOfficial ? "border-2 border-primary shadow-sm" : "border border-gray-100 shadow-sm"}`}
+                              className="w-14 h-14 rounded-full object-cover border border-gray-100 shadow-sm"
                             />
                             {isUserOnline(contact) && (
                               <div className="absolute bottom-0.5 right-0.5 w-3.5 h-3.5 bg-green-500 rounded-full border-[2.5px] border-gray-200 shadow-sm"></div>
@@ -713,11 +713,11 @@ export function Main() {
                             <div className="flex justify-between items-baseline">
                               <h3 className="font-semibold text-gray-900 truncate flex items-center gap-1.5 text-[15px] tracking-tight">
                                 {contact.name}
-                                {contact.isOfficial && (
-                                  <div className="bg-blue-500 p-0.5 rounded-full shrink-0 shadow-[0_0_8px_rgba(59,130,246,0.2)]">
+                                {(contact.id === "linkup_official" || contact.official || contact.isOfficial) && (
+                                  <div className="bg-blue-500 p-0.5 rounded-full shrink-0 shadow-[0_0_8px_rgba(59,130,246,0.2)] flex items-center justify-center">
                                     <Check
                                       size={8}
-                                      className="text-gray-900"
+                                      className="text-white"
                                       strokeWidth={5}
                                     />
                                   </div>
@@ -857,6 +857,15 @@ export function Main() {
                             <div className="flex-1">
                               <h4 className="text-gray-900 font-semibold flex items-center gap-2">
                                 {otherUser.name}
+                                {(otherUser.id === "linkup_official" || otherUser.uid === "linkup_official" || otherUser.official || otherUser.isOfficial) && (
+                                  <div className="bg-blue-500 p-0.5 rounded-full shrink-0 shadow-[0_0_8px_rgba(59,130,246,0.2)] flex items-center justify-center">
+                                    <Check
+                                      size={8}
+                                      className="text-white"
+                                      strokeWidth={5}
+                                    />
+                                  </div>
+                                )}
                               </h4>
                               <p
                                 className={
